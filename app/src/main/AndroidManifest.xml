@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.uni.ard.fitnesstracker" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <!--
+ The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but are recommended.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/moonprint_small"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name=".EditGoal"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_edit_goal" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.uni.ard.fitnesstracker.moonwalk_drawer" />
+        </activity>
+        <activity
+            android:name=".moonwalk_drawer"
+            android:label="@string/title_activity_moonwalk_drawer" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".CreateActivity"
+            android:label="@string/title_activity_edit" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.uni.ard.fitnesstracker.moonwalk_drawer" />
+        </activity>
+        <activity
+            android:name=".TestOperations"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_test_operations" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.uni.ard.fitnesstracker.moonwalk_drawer" />
+        </activity>
+
+        <service
+            android:name=".CountSteps"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <activity
+            android:name=".GoalDetails"
+            android:label="@string/title_activity_goal_details"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.uni.ard.fitnesstracker.moonwalk_drawer" />
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.uni.ard.fitnesstracker.moonwalk_drawer" />
+        </activity>
+        <activity
+            android:name=".ViewActivity"
+            android:label="@string/title_activity_view" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.uni.ard.fitnesstracker.moonwalk_drawer" />
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".MapDistance"
+            android:label="@string/title_activity_map_distance" >
+        </activity>
+        <activity
+            android:name="com.facebook.LoginActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="5e7c8f247064f6ed71dba07f6287ab312ff25c4b" />
+
+        <activity
+            android:name=".SocialMediaActivity"
+            android:label="Social Media" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.uni.ard.fitnesstracker.moonwalk_drawer" />
+        </activity>
+    </application>
+
+</manifest>

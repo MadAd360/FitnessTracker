@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.uni.ard.fitnesstracker.moonwalk_drawer" >
+    <item android:id="@+id/add_goal"
+        android:icon="@drawable/icon_goal"
+        android:title="Add Goal"
+        android:showAsAction="withText|ifRoom" />
+    <item android:id="@+id/log_action"
+        android:icon="@drawable/icon_action"
+        android:title="Log Action"
+        android:showAsAction="withText|ifRoom"/>
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+</menu>

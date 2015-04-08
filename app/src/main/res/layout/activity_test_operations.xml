@@ -1,0 +1,297 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    tools:context="com.uni.ard.fitnesstracker.EditGoal"
+    android:orientation="vertical"
+    android:background="#ff000033"
+    android:onClick="showLogDatePickerDialog">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView" >
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_weight="2"
+        android:layout_height="0dp"
+        android:background="@drawable/curved_rectangle"
+        android:padding="6dp">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Automatically Log Activity"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/dark_space_gray"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="@android:dimen/notification_large_icon_height"
+            android:padding="4dp">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:text="Start"
+                android:layout_weight="1"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginBottom="4dp"
+                android:id="@+id/startStopLog"
+                android:background="@drawable/curved_rectangle"
+                android:onClick="toggleLogging"
+                android:textColor="@color/dark_space_gray" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:text="Reset"
+                android:layout_weight="1"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginBottom="4dp"
+                android:id="@+id/resetLog"
+                android:background="@drawable/curved_rectangle"
+                android:onClick="reset"
+                android:textColor="@color/dark_space_gray" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="@android:dimen/notification_large_icon_height"
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:text="Date"
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:id="@+id/logDate"
+                android:textColor="@color/dark_space_gray" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:text="Set Date"
+                android:layout_weight="1"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:id="@+id/changeLogDate"
+                android:background="@drawable/curved_rectangle"
+                android:textColor="@color/dark_space_gray"
+                android:onClick="showLogDatePickerDialog" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="@android:dimen/notification_large_icon_height"
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Frequency (log/s)"
+                android:textSize="16sp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:gravity="center_horizontal"
+                android:textColor="@color/dark_space_gray"  />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/seekBar"
+                android:progress="0"
+                android:max="99"
+                android:gravity="center_vertical"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:textColor="@color/dark_space_gray" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/dark_space_gray" />
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@android:dimen/notification_large_icon_height"
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:text="Recorded:"
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:textColor="@color/dark_space_gray"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:text="0"
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:id="@+id/logAmount"
+                android:textColor="@color/dark_space_gray"
+                android:textSize="18sp" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:padding="4dp"
+                android:layout_weight="1">
+
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/spinner"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:popupBackground="#00000000" />
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="@android:dimen/notification_large_icon_height"
+            android:id="@+id/spinnerGoals"
+            android:spinnerMode="dialog"
+            android:layout_margin="4dp"
+            android:background="@drawable/curved_rectangle" />
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:text="Record"
+                android:layout_height="@android:dimen/notification_large_icon_height"
+                android:background="@drawable/curved_rectangle"
+                android:layout_margin="4dp"
+                android:onClick="record"
+                android:textColor="@color/dark_space_gray" />
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:background="@drawable/curved_rectangle"
+        android:padding="6dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Change Application Date/Time"
+            android:textSize="20sp"
+            android:id="@+id/textView2"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/dark_space_gray" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:padding="4dp"
+            android:layout_height="0dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:text="Date"
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:id="@+id/date"
+                android:textColor="@color/dark_space_gray"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:text="Change"
+                android:layout_weight="1"
+                android:id="@+id/changeDate"
+                android:background="@drawable/curved_rectangle"
+                android:onClick="showSystemDatePickerDialog"
+                android:textColor="@color/dark_space_gray" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:padding="4dp"
+            android:layout_height="0dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:text="Test Mode Off"
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:id="@+id/testMode"
+                android:textColor="@color/dark_space_gray" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:text="Reset"
+                android:layout_weight="1"
+                android:id="@+id/changeTime"
+                android:background="@drawable/curved_rectangle"
+                android:onClick="resetSystemTime"
+                android:textColor="@color/dark_space_gray" /></LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

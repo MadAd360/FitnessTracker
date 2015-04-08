@@ -1,0 +1,34 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.uni.ard.fitnesstracker.GoalView" >
+
+    <item android:id="@+id/editGoal"
+        android:icon="@drawable/ic_menu_edit_space"
+        android:title="Edit"
+        android:showAsAction="withText|ifRoom" />
+
+    <item android:id="@+id/suspendGoal"
+        android:icon="@drawable/ic_action_pause_space"
+        android:title="Suspend"
+        android:showAsAction="withText|ifRoom" />
+
+    <item android:id="@+id/resumeGoal"
+        android:icon="@drawable/ic_action_play_space"
+        android:title="Resume"
+        android:showAsAction="withText|ifRoom"  />
+
+    <item android:id="@+id/log_action"
+        android:icon="@drawable/icon_action"
+        android:title="Log Action"
+        android:showAsAction="withText|ifRoom"/>
+
+    <item android:id="@+id/abandonGoal"
+        android:icon="@drawable/ic_action_discard_space"
+        android:title="Abandon"
+        android:showAsAction="withText|ifRoom" />
+
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+</menu>

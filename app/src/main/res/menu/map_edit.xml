@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/startPoint"
+        android:icon="@drawable/ic_start_location_space"
+        android:title="Set Start"
+        android:showAsAction="withText|ifRoom"/>
+
+    <item android:id="@+id/endPoint"
+        android:icon="@drawable/ic_end_location_space"
+        android:title="Set End"
+        android:showAsAction="withText|ifRoom" />
+</menu>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@android:id/background">
+        <shape
+            android:innerRadiusRatio="3"
+            android:shape="ring"
+            android:thicknessRatio="14.0"
+            android:useLevel="false">
+
+            <gradient
+                android:startColor="@color/light_space_gray"
+                android:endColor="@color/light_space_gray"
+                android:centerColor="@color/light_space_gray"
+                android:type="sweep" />
+
+            <stroke android:color="@color/dark_space_gray" android:width="1dp"></stroke>
+        </shape>
+    </item>
+    <item android:id="@android:id/secondaryProgress">
+    <rotate
+        android:fromDegrees="270"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:toDegrees="270" >
+        <shape
+            android:innerRadiusRatio="3"
+            android:shape="ring"
+            android:thicknessRatio="14.0">
+            <rotate
+                android:fromDegrees="0"
+                android:toDegrees="360"
+                android:pivotX="50%"
+                android:pivotY="50%" />
+            <gradient
+                android:startColor="#8800FF00"
+                android:endColor="#8800FF00"
+                android:centerColor="#8800FF00"
+                android:type="sweep" />
+        </shape>
+    </rotate>
+    </item>
+    <item android:id="@android:id/progress">
+        <rotate
+            android:fromDegrees="270"
+            android:pivotX="50%"
+            android:pivotY="50%"
+            android:toDegrees="270" >
+            <shape
+                android:innerRadiusRatio="3"
+                android:shape="ring"
+                android:thicknessRatio="14.0">
+                <rotate
+                    android:fromDegrees="0"
+                    android:toDegrees="360"
+                    android:pivotX="50%"
+                    android:pivotY="50%" />
+                <gradient
+                    android:startColor="#FFFFFF"
+                    android:endColor="#FFFFFF"
+                    android:centerColor="#FFFFFF"
+                    android:type="sweep" />
+                <stroke android:color="@color/dark_space_gray" android:width="1dp"></stroke>
+            </shape>
+        </rotate>
+    </item>
+</layer-list>

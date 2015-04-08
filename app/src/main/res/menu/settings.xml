@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.uni.ard.fitnesstracker.SocialMediaFragment" >
+    <item android:id="@+id/test_options"
+        android:title="Testing Options"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+</menu>

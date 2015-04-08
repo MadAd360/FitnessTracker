@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:autoMirrored="false">
+    <item android:id="@+id/planetIcon" android:drawable="@drawable/planet_circle" android:top="0dp" android:bottom="140dp"></item>
+    <item android:id="@+id/climbArrow" android:drawable="@drawable/climb_arrow" android:top="220dp" android:bottom="0dp" android:left="35dp" android:right="35dp"></item>
+
+</layer-list>

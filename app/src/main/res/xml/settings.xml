@@ -1,0 +1,46 @@
+<!--?xml version="1.0" encoding="utf-8"?-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:key="@string/pref_goal_all"
+        android:title="Show all goals"
+        android:summary="Show all goals rather than just active"
+        android:defaultValue="false" />
+
+    <CheckBoxPreference
+        android:key="@string/pref_notification_disable"
+        android:title="Disable notifications"
+        android:summary="Disable notifications on completion of a goal and when overdue"
+        android:defaultValue="false" />
+
+    <CheckBoxPreference
+        android:key="@string/pref_statistics_disable"
+        android:title="Disable goal statistics"
+        android:summary="Disable statistics showing with goals"
+        android:defaultValue="false" />
+
+    <CheckBoxPreference
+        android:key="@string/pref_map_disable"
+        android:title="Disable map"
+        android:summary="Disable use of maps to set goals"
+        android:defaultValue="false" />
+
+    <CheckBoxPreference
+        android:key="@string/pref_units_disable"
+        android:title="Disable multiple units"
+        android:summary="Disable use of different units when setting goal (steps will automatically be used)"
+        android:defaultValue="false" />
+
+    <CheckBoxPreference
+        android:key="@string/pref_social_disable"
+        android:title="Disable social media"
+        android:summary="Disable social media integration such as logging in and sharing statuses"
+        android:defaultValue="false" />
+
+    <!--<preferencecategory android:title="@string/pref_user_profile">-->
+        <!--<edittextpreference android:title="@string/pref_user_name" android:summary="@string/pref_user_name_summary" android:key="prefUsername">-->
+        <!--</edittextpreference></preferencecategory>-->
+
+        <com.uni.ard.fitnesstracker.ColorPreference android:title="User colour" android:summary="Colour to customise aspects of the user interface" android:key="@string/pref_user_colour"></com.uni.ard.fitnesstracker.ColorPreference>
+
+</PreferenceScreen>

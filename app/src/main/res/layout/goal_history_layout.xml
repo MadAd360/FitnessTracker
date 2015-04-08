@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:background="@drawable/curved_rectangle">
+
+    <TextView
+        android:id="@+id/historyLayout"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="50dp"
+        android:textSize="24sp"
+        android:text="History"
+        android:layout_alignParentTop="true"
+        android:textColor="@color/dark_space_gray"
+        android:singleLine="true"
+        android:textStyle="bold" />
+
+    <ListView android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/historyLayout"
+        android:layout_alignParentLeft="true"
+        android:divider="@color/dark_space_gray"
+        android:dividerHeight="1dp"
+        android:headerDividersEnabled="false" />
+
+    <TextView android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="No History"
+        android:gravity="center"  />
+
+</RelativeLayout>
+</RelativeLayout>

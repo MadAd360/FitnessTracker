@@ -1,0 +1,296 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="com.uni.ard.fitnesstracker.GoalView"
+    android:padding="8dp">
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignTop="@+id/scrollView"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/curved_rectangle"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <RelativeLayout
+                android:id="@+id/titleLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:layout_centerHorizontal="true"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/action_icon"
+                    android:layout_width="85dp"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:contentDescription="TODO"
+                    android:src="@drawable/moonprint_small" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@id/action_icon"
+                    android:gravity="center"
+                    android:id="@+id/title"
+                    android:text="Title"
+                    android:textSize="24dp"
+                    android:singleLine="true"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:textColor="@color/dark_space_gray" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_below="@+id/titleLayout"
+                android:layout_margin="8dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/mapLayout">
+
+                <com.google.android.gms.maps.MapView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/map"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/mapProgress"/>
+
+                <TextView
+                    android:id="@+id/mapProgress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Walked x"
+                    android:textColor="@color/dark_space_gray"
+                    android:gravity="center_horizontal"
+                    android:textSize="18sp"
+                    android:layout_alignParentBottom="true"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/progressLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/layoutWalk">
+
+
+
+                    <TextView
+                        android:id="@+id/typeWalk"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Walked"
+                        android:textColor="@color/dark_space_gray"
+                        android:gravity="center_horizontal"
+                        android:textSize="16sp" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarWalk"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:max="1000"
+                    android:progress="500"
+                    android:indeterminate="false"
+                    android:progressDrawable="@drawable/custom_progress"
+                    android:layout_below="@id/typeWalk"
+                    android:layout_above="@+id/unitWalk"
+                    />
+
+                    <TextView
+                    android:id="@+id/totalWalk"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="26dp"
+                    android:gravity="center"
+                    android:text="100000 of 200000000"
+                    android:textColor="@color/dark_space_gray"
+                    android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/unitWalk"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Miles"
+                        android:textColor="@color/dark_space_gray"
+                        android:textSize="16sp"
+                        android:layout_alignParentBottom="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/layoutClimb">
+
+
+
+                    <TextView
+                        android:id="@+id/typeClimb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Climbed"
+                        android:textColor="@color/dark_space_gray"
+                        android:gravity="center_horizontal"
+                        android:textSize="16sp" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBarClimb"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:max="1000"
+                        android:progress="500"
+                        android:indeterminate="false"
+                        android:progressDrawable="@drawable/custom_progress"
+                        android:layout_below="@id/typeClimb"
+                        android:layout_above="@+id/unitClimb"
+                        />
+
+                    <TextView
+                        android:id="@+id/totalClimb"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="26dp"
+                        android:gravity="center"
+                        android:text="100000 of 200000000"
+                        android:textColor="@color/dark_space_gray"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/unitClimb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Miles"
+                        android:textColor="@color/dark_space_gray"
+                        android:textSize="16sp"
+                        android:layout_alignParentBottom="true"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/statusLayout"
+                android:layout_below="@id/progressLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:layout_centerHorizontal="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:textSize="24sp"
+                    android:text="Status:"
+                    android:textColor="@color/dark_space_gray"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:id="@+id/status"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:textSize="24sp"
+                    android:text="Active"
+                    android:textColor="@color/dark_space_gray"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/startDateLayout"
+                android:layout_below="@id/statusLayout"
+                android:layout_width="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="Start Date:"
+                android:textColor="@color/dark_space_gray"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:id="@+id/goalStartDate"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:text="06/07/08"
+                    android:textColor="@color/dark_space_gray"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/endDateLayout"
+                android:layout_below="@id/startDateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:layout_centerHorizontal="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:text="End Date:"
+                    android:textColor="@color/dark_space_gray"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:id="@+id/goalEndDate"
+                    android:textSize="18sp"
+                    android:text="06/07/08"
+                    android:textColor="@color/dark_space_gray"/>
+
+            </LinearLayout>
+
+            <ImageSwitcher
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageSwitcher"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+        </LinearLayout>
+
+        </RelativeLayout>
+

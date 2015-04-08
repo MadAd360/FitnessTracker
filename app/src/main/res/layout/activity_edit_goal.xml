@@ -1,0 +1,290 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    tools:context="com.uni.ard.fitnesstracker.EditGoal"
+    android:orientation="vertical"
+    android:background="#ff000033">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView" >
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/linearLayout">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="@android:dimen/notification_large_icon_height"
+                android:id="@+id/goalName"
+                android:hint="@string/hint_goal_name"
+                android:textColor="@color/light_space_gray"
+                android:singleLine="true"
+                android:textColorHint="#88999999"
+                android:textIsSelectable="false" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@android:dimen/notification_large_icon_height"
+                android:clickable="true">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/string_start"
+                    android:textColor="#ff999999"
+                    android:gravity="center"
+                    android:textSize="18sp"/>
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/startDateButton"
+                    android:onClick="showStartDatePickerDialog"
+                    android:background="#00000000"
+                    android:textColor="#ff999999"/>
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/startTimeButton"
+                    android:onClick="showStartTimePickerDialog"
+                    android:background="#00000000"
+                    android:textColor="#ff999999" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@android:dimen/notification_large_icon_height"
+                android:clickable="true">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/string_end"
+                    android:textColor="#ff999999"
+                    android:gravity="center"
+                    android:textSize="18sp"/>
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/endDateButton"
+                    android:onClick="showEndDatePickerDialog"
+                    android:background="#00000000"
+                    android:textColor="#ff999999"/>
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/endTimeButton"
+                    android:onClick="showEndTimePickerDialog"
+                    android:background="#00000000"
+                    android:textColor="#ff999999" />
+            </LinearLayout>
+
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/string_goal_map"
+                android:id="@+id/selectMap"
+                android:onClick="selectMap"
+                android:layout_weight="1"
+                android:background="@drawable/curved_rectangle"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:textColor="#ff333333"
+                android:clickable="true" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/selectCustom"
+                android:text="@string/string_goal_custom"
+                android:onClick="selectCustom"
+                android:layout_weight="1"
+                android:background="@drawable/curved_rectangle"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:textColor="#ff333333"
+                android:clickable="true" />
+
+
+            <LinearLayout
+                android:id="@+id/customLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="@android:dimen/notification_large_icon_height"
+                android:id="@+id/bothSwitch"
+                android:text="@string/string_goal_type"
+                android:layout_gravity="center"
+                android:thumb="@drawable/curved_rectangle"
+                android:textOn="Both"
+                android:textOff="Single"
+                android:textColor="@color/light_space_gray"
+                android:thumbTextPadding="35dp"
+                android:onClick="changedType"
+                android:switchTextAppearance="@style/SwitchTextAppearance"/>
+
+
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="@android:dimen/notification_large_icon_height"
+                android:id="@+id/typeSwitch"
+                android:layout_gravity="center_vertical|right"
+                android:thumb="@drawable/curved_rectangle"
+                android:onClick="changedSingleType"
+                android:textOn="Climbed"
+                android:textOff="Walked"
+                android:thumbTextPadding="29dp"
+                android:switchTextAppearance="@style/SwitchTextAppearance"/>
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@android:dimen/notification_large_icon_height"
+                android:id="@+id/walkLayout">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="@android:dimen/notification_large_icon_height"
+                    android:inputType="number"
+                    android:id="@+id/numberWalk"
+                    android:layout_weight="2"
+                    android:hint="@string/hint_walking_target"
+                    android:textColorHint="#88999999"
+                    android:textColor="@color/light_space_gray" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="8dp">
+
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/walkSpinner"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:popupBackground="#00000000"/>
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@android:dimen/notification_large_icon_height"
+                    android:id="@+id/climbLayout">
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="@android:dimen/notification_large_icon_height"
+                        android:inputType="number"
+                        android:id="@+id/numberClimb"
+                        android:layout_weight="2"
+                        android:hint="@string/hint_climbing_target"
+                        android:textColorHint="#88999999"
+                        android:textColor="@color/light_space_gray" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="8dp">
+
+                        <Spinner
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/climbSpinner"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:popupBackground="#00000000"/>
+
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@android:dimen/notification_large_icon_height">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/string_cancel"
+                    android:id="@+id/cancel"
+                    android:onClick="cancelGoal"
+                    android:layout_weight="1"
+                    android:background="@drawable/curved_rectangle"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="0dp"
+                    android:textColor="#ff333333"
+                    android:clickable="true" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/string_confirm"
+                    android:id="@+id/confirm"
+                    android:layout_weight="1"
+                    android:background="@drawable/curved_rectangle"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="#ff333333"
+                    android:clickable="true"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

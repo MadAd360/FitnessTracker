@@ -1,0 +1,80 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.uni.ard.fitnesstracker.SocialMediaFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.facebook.widget.LoginButton
+                android:id="@+id/authButtonFacebook"
+                android:layout_width="match_parent"
+                android:layout_height="@android:dimen/notification_large_icon_height"
+                android:layout_gravity="center_horizontal"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Logged in as: -"
+                android:id="@+id/userFacebook"
+                android:layout_below="@id/authButtonFacebook"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:textColor="@color/light_space_gray"
+                android:layout_marginTop="4dp"/>
+
+            <RelativeLayout android:layout_width="match_parent"
+                android:id="@+id/twitterLayout"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/userFacebook"
+                android:layout_marginTop="10dp">
+
+            <com.twitter.sdk.android.core.identity.TwitterLoginButton
+                android:id="@+id/authButtonTwitter"
+                android:layout_width="match_parent"
+                android:layout_height="@android:dimen/notification_large_icon_height"/>
+
+            <Button
+                android:id="@+id/logoutButtonTwitter"
+                android:layout_width="match_parent"
+                android:layout_height="@android:dimen/notification_large_icon_height"
+                android:background="@drawable/tw__login_btn"
+                android:text="Log Out"
+                android:drawableLeft="@drawable/tw__ic_logo_default"
+                android:drawablePadding="4dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="12dp"
+
+                android:textColor="@color/tw__solid_white"
+                android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Logged in as: -"
+                android:layout_marginTop="4dp"
+                android:layout_below="@id/twitterLayout"
+                android:id="@+id/userTwitter"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:textColor="@color/light_space_gray"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

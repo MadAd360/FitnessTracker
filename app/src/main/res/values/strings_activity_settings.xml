@@ -1,0 +1,15 @@
+<resources>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_goal_all">pref_goal_all</string>
+    <string name="pref_notification_disable">pref_notification_disable</string>
+    <string name="pref_user_colour">pref_user_colour</string>
+    <string name="pref_statistics_disable">pref_statistics_disable</string>
+    <string name="pref_map_disable">pref_map_disable</string>
+    <string name="pref_units_disable">pref_units_disable</string>
+    <string name="pref_social_disable">pref_social_disable</string>
+
+</resources>
