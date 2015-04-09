@@ -126,6 +126,12 @@ public class moonwalk_drawer extends Activity
                         .replace(R.id.container, SocialMediaFragment.newInstance())
                         .commit();
                 match = true;
+            } else if (!socialDisable && position == 3) {
+                mTitle = "Treats";
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, TreatsFragment.newInstance())
+                        .commit();
+                match = true;
             } else {
                 mTitle = getString(R.string.title_activity_settings);
                 Intent i = new Intent(this, SettingsActivity.class);

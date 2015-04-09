@@ -54,7 +54,7 @@ public class TreatCursorAdapter extends CursorAdapter {
         icon.setImageBitmap(iconImage);
 
         nameView.setText(treatName);
-        calorieView.setText(caloriesNumber + "");
+        calorieView.setText(caloriesNumber + " Calories");
     }
 
 }

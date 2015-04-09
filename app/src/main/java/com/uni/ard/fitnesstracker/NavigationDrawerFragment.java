@@ -112,6 +112,7 @@ public class NavigationDrawerFragment extends Fragment {
                                 getString(R.string.title_section4),
                                 getString(R.string.title_section2),
                                 getString(R.string.title_section3),
+                                "Treats",
                                 getString(R.string.title_activity_settings),
                         }));
             } else {
@@ -125,6 +126,7 @@ public class NavigationDrawerFragment extends Fragment {
                                 getString(R.string.title_section2),
                                 getString(R.string.title_section3),
                                 "Social Media",
+                                "Treats",
                                 getString(R.string.title_activity_settings),
                         }));
             }
@@ -138,6 +140,7 @@ public class NavigationDrawerFragment extends Fragment {
                                 "Goals",
                                 getString(R.string.title_section2),
                                 getString(R.string.title_section3),
+                                "Treats",
                                 getString(R.string.title_activity_settings),
                         }));
             } else {
@@ -150,6 +153,7 @@ public class NavigationDrawerFragment extends Fragment {
                                 getString(R.string.title_section2),
                                 getString(R.string.title_section3),
                                 "Social Media",
+                                "Treats",
                                 getString(R.string.title_activity_settings),
                         }));
             }

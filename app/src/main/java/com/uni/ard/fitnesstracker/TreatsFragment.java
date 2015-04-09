@@ -1,12 +1,10 @@
 package com.uni.ard.fitnesstracker;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -17,10 +15,10 @@ public class TreatsFragment extends Fragment implements AdapterView.OnItemClickL
     private DBAdapter mDbHelper;
     private Cursor mNotesCursor;
     GridView grid;
-    ActivityCursorAdapter activityAdapter;
+    TreatCursorAdapter treatAdapter;
 
 
-    public static TreatsFragment newInstance(boolean filter, long rowId) {
+    public static TreatsFragment newInstance() {
         TreatsFragment fragment = new TreatsFragment();
         Bundle args = new Bundle();
 //        if (filter) {
@@ -55,14 +53,14 @@ public class TreatsFragment extends Fragment implements AdapterView.OnItemClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_activitylist_grid, container, false);
+        View view = inflater.inflate(R.layout.fragment_treat_grid, container, false);
 
         grid = (GridView) view.findViewById(android.R.id.list);
         grid.setEmptyView(view.findViewById(android.R.id.empty));
 
         // Now create an array adapter and set it to display using our row
-        activityAdapter = new ActivityCursorAdapter(getActivity(), mNotesCursor);
-        grid.setAdapter(activityAdapter);
+        treatAdapter = new TreatCursorAdapter(getActivity(), mNotesCursor);
+        grid.setAdapter(treatAdapter);
         grid.setOnItemClickListener(this);
         return view;
 
@@ -71,14 +69,12 @@ public class TreatsFragment extends Fragment implements AdapterView.OnItemClickL
     @Override
     public void onResume() {  // After a pause OR at startup
         super.onResume();
-        activityAdapter.notifyDataSetChanged();
+        treatAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        Intent i = new Intent(getActivity(), ViewActivity.class);
-        i.putExtra(DBAdapter.KEY_ROWID, id);
-        startActivity(i);
+        //eat the treat?
     }
 
 //    @Override
