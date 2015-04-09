@@ -62,6 +62,10 @@ public class EditGoal extends Activity {
     private DBAdapter mDbHelper;
 
 
+    private static final int MAP_ID = 1;
+    private static final int CALORIE_ID = 2;
+
+
     DateFormat dateFormat;
     DateFormat timeFormat;
 
@@ -306,7 +310,7 @@ public class EditGoal extends Activity {
                         bundle.putLong(DBAdapter.KEY_GOAL_END, endNumber);
                         bundle.putBoolean(DBAdapter.KEY_TYPE, typeClimb);
                         bundle.putBoolean(DBAdapter.KEY_GOAL_DUAL, typeBoth);
-                        if(mapId != null) {
+                        if (mapId != null) {
                             bundle.putLong(DBAdapter.KEY_GOAL_MAP, mapId);
                         }
                         if (mRowId != null) {
@@ -495,7 +499,7 @@ public class EditGoal extends Activity {
             toast.show();
         } else {
             Intent i = new Intent(this, MapDistance.class);
-            startActivityForResult(i, 0);
+            startActivityForResult(i, MAP_ID);
         }
     }
 
@@ -504,25 +508,35 @@ public class EditGoal extends Activity {
         mCustomLayout.setVisibility(View.VISIBLE);
     }
 
+    public void selectCalorie(View v) {
+        mCustomLayout.setVisibility(View.GONE);
+        Intent i = new Intent(this, TreatsActivity.class);
+        startActivityForResult(i, CALORIE_ID);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == Activity.RESULT_OK) {
-            Bundle extras = intent.getExtras();
-            int newTotal = extras.getInt(DBAdapter.KEY_GOAL_WALK);
-            String newUnit = extras.getString(DBAdapter.KEY_GOAL_WALK_UNIT);
-            mapStartLat = extras.getDouble(DBAdapter.KEY_MAP_START_LAT);
-            mapStartLong = extras.getDouble(DBAdapter.KEY_MAP_START_LONG);
-            mapEndLat = extras.getDouble(DBAdapter.KEY_MAP_END_LAT);
-            mapEndLong = extras.getDouble(DBAdapter.KEY_MAP_END_LONG);
-            mapType = true;
-            mTypeSwitch.setChecked(false);
-            mTypeBothSwitch.setChecked(false);
+            if (requestCode == MAP_ID) {
+                Bundle extras = intent.getExtras();
+                int newTotal = extras.getInt(DBAdapter.KEY_GOAL_WALK);
+                String newUnit = extras.getString(DBAdapter.KEY_GOAL_WALK_UNIT);
+                mapStartLat = extras.getDouble(DBAdapter.KEY_MAP_START_LAT);
+                mapStartLong = extras.getDouble(DBAdapter.KEY_MAP_START_LONG);
+                mapEndLat = extras.getDouble(DBAdapter.KEY_MAP_END_LAT);
+                mapEndLong = extras.getDouble(DBAdapter.KEY_MAP_END_LONG);
+                mapType = true;
+                mTypeSwitch.setChecked(false);
+                mTypeBothSwitch.setChecked(false);
 
-            mWalkText.setText(Integer.toString(newTotal));
+                mWalkText.setText(Integer.toString(newTotal));
 
-            if (newUnit != null) {
-                walkSpinner.setSelection(walkAdapter.getPosition(newUnit));
+                if (newUnit != null) {
+                    walkSpinner.setSelection(walkAdapter.getPosition(newUnit));
+                }
+            }else if(requestCode == CALORIE_ID){
+                //sort out calorie stuff
             }
         }
     }

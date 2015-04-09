@@ -49,9 +49,11 @@
     <string name="string_start">Start:</string>
     <string name="string_end">End:</string>
     <string name="string_goal_map">Select Goal From Map</string>
-    <string name="string_goal_custom">Select Custom Goal</string>
+    <string name="string_goal_custom">Select Distance Goal</string>
     <string name="string_goal_type">Goal Type</string>
     <string name="hint_walking_target">Walking Target</string>
     <string name="hint_climbing_target">Climbing Target</string>
+    <string name="title_activity_treat">Select Treat</string>
+
 
 </resources>

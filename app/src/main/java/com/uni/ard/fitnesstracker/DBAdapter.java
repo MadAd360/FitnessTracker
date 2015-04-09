@@ -6,8 +6,11 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -54,6 +57,10 @@ public class DBAdapter {
     public static final String KEY_MAP_END_LAT = "endlat";
     public static final String KEY_MAP_END_LONG = "endlong";
 
+    public static final String KEY_TREAT_NAME = "name";
+    public static final String KEY_TREAT_CALORIES = "calories";
+    public static final String KEY_TREAT_IMAGE = "image";
+
 
     private static final String TAG = "DBAdapter";
     private DatabaseHelper mDbHelper;
@@ -64,6 +71,7 @@ public class DBAdapter {
     private static final String GOAL_TABLE = "goals";
     private static final String MAP_TABLE = "maps";
     private static final String ACTIVITY_TABLE = "activities";
+    private static final String TREAT_TABLE = "treats";
     private static final String HISTORY_TABLE = "history";
     private static final int DATABASE_VERSION = 2;
 
@@ -94,6 +102,12 @@ public class DBAdapter {
                     + "startlat real not null, startlong real not null, " +
                     "endlat real not null, endlong real not null);";
 
+
+    private static final String TREAT_CREATE =
+            "create table " + TREAT_TABLE + " (_id integer primary key autoincrement, "
+                    + "name text not null, calories integer not null, " +
+                    "image blob not null);";
+
     private final Context mCtx;
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -111,6 +125,7 @@ public class DBAdapter {
             db.execSQL(ACTIVITY_CREATE);
             db.execSQL(HISTORY_CREATE);
             db.execSQL(MAP_CREATE);
+            db.execSQL(TREAT_CREATE);
         }
 
         @Override
@@ -144,6 +159,11 @@ public class DBAdapter {
     public DBAdapter open() throws SQLException {
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getWritableDatabase();
+        if(!fetchTreats().isFirst()){
+            Log.d("woops", "ohoh");
+            Bitmap bm = BitmapFactory.decodeResource(mCtx.getResources(), R.drawable.ice_cream);
+            insertTreat("Ice Cream", bm, 100);
+        }
         return this;
     }
 
@@ -632,5 +652,46 @@ public class DBAdapter {
                 mDb.delete(MAP_TABLE, KEY_ROWID + "=" + mapId, null);
             }
         }
+    }
+
+    public long insertTreat(String name, Bitmap image, int calories) {
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+        byte[] data = outputStream.toByteArray();
+
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_TREAT_IMAGE, data);
+        initialValues.put(KEY_TREAT_NAME, name);
+        initialValues.put(KEY_TREAT_CALORIES, calories);
+
+
+        Long rowID = mDb.insert(TREAT_TABLE, null, initialValues);
+
+        return rowID;
+    }
+
+    public Cursor fetchTreat(Long rowId) {
+
+        Cursor mCursor =
+
+                mDb.query(true, TREAT_TABLE, new String[]{KEY_ROWID, KEY_TREAT_NAME, KEY_TREAT_CALORIES, KEY_TREAT_IMAGE}, KEY_ROWID + "=" + rowId, null,
+                        null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+    }
+
+    public Cursor fetchTreats() {
+
+        Cursor mCursor =
+
+                mDb.query(true, TREAT_TABLE, new String[]{KEY_ROWID, KEY_TREAT_NAME, KEY_TREAT_CALORIES, KEY_TREAT_IMAGE}, null, null,
+                        null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
     }
 }

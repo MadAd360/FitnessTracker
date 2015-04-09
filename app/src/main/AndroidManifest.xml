@@ -55,12 +55,6 @@
                 android:value="com.uni.ard.fitnesstracker.moonwalk_drawer" />
         </activity>
 
-        <service
-            android:name=".CountSteps"
-            android:enabled="true"
-            android:exported="true" >
-        </service>
-
         <activity
             android:name=".GoalDetails"
             android:label="@string/title_activity_goal_details"
@@ -110,6 +104,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.uni.ard.fitnesstracker.moonwalk_drawer" />
+        </activity>
+        <activity
+            android:name=".TreatsActivity"
+            android:label="@string/title_activity_treat" >
         </activity>
     </application>
 
