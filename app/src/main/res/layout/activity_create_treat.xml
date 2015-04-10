@@ -1,0 +1,97 @@
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="@android:dimen/notification_large_icon_height"
+            android:id="@+id/treatName"
+            android:hint="Treat Name"
+            android:textColorHint="#88999999"
+            android:textColor="#ff999999" />
+
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="@android:dimen/notification_large_icon_height"
+        android:inputType="number"
+        android:id="@+id/treatCalories"
+        android:hint="Calories"
+        android:textColorHint="#88999999"
+        android:textColor="#ff999999" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:padding="8dp"
+        android:layout_weight="3">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Select Image"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/light_space_gray" />
+
+        <ImageButton
+            android:id="@+id/treatImage"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:background="#00000000"
+            android:onClick="addImage"/>
+
+    </RelativeLayout>
+
+
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@android:dimen/notification_large_icon_height">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/string_cancel"
+            android:id="@+id/cancel"
+            android:onClick="cancelTreat"
+            android:layout_weight="1"
+            android:background="@drawable/curved_rectangle"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="0dp"
+            android:textColor="#ff333333"
+            android:clickable="true" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/string_confirm"
+            android:id="@+id/confirm"
+            android:layout_weight="1"
+            android:onClick="confirmTreat"
+            android:background="@drawable/curved_rectangle"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
+            android:textColor="#ff333333"
+            android:clickable="true"/>
+
+    </LinearLayout>
+
+</LinearLayout>

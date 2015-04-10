@@ -54,6 +54,9 @@
     <string name="hint_walking_target">Walking Target</string>
     <string name="hint_climbing_target">Climbing Target</string>
     <string name="title_activity_treat">Select Treat</string>
+    <string name="title_activity_create_treat">CreateTreat</string>
+
+    <string name="hello_world">Hello world!</string>
 
 
 </resources>

@@ -36,9 +36,9 @@
         android:layout_height="@android:dimen/notification_large_icon_height"
         android:text="Add Treat"
         android:id="@+id/addTreat"
-        android:onClick="addTreat"
         android:background="@drawable/curved_rectangle"
         android:layout_marginTop="8dp"
+        android:padding="8dp"
         android:layout_alignParentBottom="true"
         android:textColor="#ff333333"
         android:clickable="true" />

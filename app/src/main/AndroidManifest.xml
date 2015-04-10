@@ -54,7 +54,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.uni.ard.fitnesstracker.moonwalk_drawer" />
         </activity>
-
         <activity
             android:name=".GoalDetails"
             android:label="@string/title_activity_goal_details"
@@ -108,6 +107,10 @@
         <activity
             android:name=".TreatsActivity"
             android:label="@string/title_activity_treat" >
+        </activity>
+        <activity
+            android:name=".CreateTreat"
+            android:label="@string/title_activity_create_treat" >
         </activity>
     </application>
 

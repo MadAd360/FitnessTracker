@@ -3,18 +3,25 @@ package com.uni.ard.fitnesstracker;
 import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
+
+import java.io.IOException;
 
 public class TreatsFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private DBAdapter mDbHelper;
     private Cursor mNotesCursor;
     GridView grid;
+    Button addTreatButton;
     TreatCursorAdapter treatAdapter;
 
 
@@ -55,6 +62,16 @@ public class TreatsFragment extends Fragment implements AdapterView.OnItemClickL
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_treat_grid, container, false);
 
+
+        addTreatButton = (Button) view.findViewById(R.id.addTreat);
+
+        addTreatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addTreat();
+            }
+        });
+
         grid = (GridView) view.findViewById(android.R.id.list);
         grid.setEmptyView(view.findViewById(android.R.id.empty));
 
@@ -77,22 +94,17 @@ public class TreatsFragment extends Fragment implements AdapterView.OnItemClickL
         //eat the treat?
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-//        super.onActivityResult(requestCode, resultCode, intent);
-//        if (resultCode == Activity.RESULT_OK) {
-//            Bundle extras = intent.getExtras();
-//            switch (requestCode) {
-//                case ACTIVITY_LOG:
-//                    Boolean logType = extras.getBoolean(DBAdapter.KEY_TYPE);
-//                    Integer number = extras.getInt(DBAdapter.KEY_ACTIVITY_NUMBER);
-//                    String unitAction = extras.getString(DBAdapter.KEY_ACTIVITY_UNIT);
-//                    Long date = extras.getLong(DBAdapter.KEY_ACTIVITY_DATE);
-//                    Long goalNumber = extras.getLong(DBAdapter.KEY_ACTIVITY_GOAL);
-//                    Long rowId = extras.getLong(DBAdapter.KEY_ROWID);
-//                    mDbHelper.updateActivity(rowId, number, unitAction, logType, goalNumber, date);
-//                    break;
-//            }
-//        }
-//    }
+    public void addTreat(){
+        Intent i = new Intent(getActivity(), CreateTreat.class);
+        startActivityForResult(i, 0);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (resultCode == getActivity().RESULT_OK) {
+            Bundle extras = intent.getExtras();
+            //save treat
+        }
+    }
 }
