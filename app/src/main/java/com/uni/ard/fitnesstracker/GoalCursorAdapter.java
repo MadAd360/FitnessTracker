@@ -3,8 +3,11 @@ package com.uni.ard.fitnesstracker;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.preference.PreferenceManager;
@@ -16,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.io.ByteArrayInputStream;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -54,24 +58,54 @@ public class GoalCursorAdapter extends CursorAdapter {
 
         // Extract properties from cursor
 
+        Long calorieId = cursor.getLong(
+                cursor.getColumnIndexOrThrow(DBAdapter.KEY_GOAL_CALORIE));
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        int mColour = sp.getInt(context.getResources().getString(R.string.pref_user_colour), context.getResources().getColor(R.color.light_space_gray));
-        boolean both = cursor.getInt(
-                cursor.getColumnIndexOrThrow(DBAdapter.KEY_GOAL_DUAL)) > 0;
-        LayerDrawable iconDrawable;
-        if (!both) {
-            boolean type = cursor.getInt(
-                    cursor.getColumnIndexOrThrow(DBAdapter.KEY_TYPE)) > 0;
-            if (type) {
-                iconDrawable = (LayerDrawable) context.getResources().getDrawable(R.drawable.climb_icon);
-                Drawable planet = (Drawable) iconDrawable.findDrawableByLayerId(R.id.planetIcon);
+        Drawable iconDrawable;
 
-                planet.setColorFilter(mColour, PorterDuff.Mode.MULTIPLY);
+        if(calorieId != null){
+            Cursor treatCursor = mDbHelper.fetchTreat(calorieId);
+            byte[] imageByteArray = treatCursor.getBlob(treatCursor.getColumnIndexOrThrow(DBAdapter.KEY_TREAT_IMAGE));
+
+            ByteArrayInputStream imageStream = new ByteArrayInputStream(imageByteArray);
+            Bitmap iconImage= BitmapFactory.decodeStream(imageStream);
+            iconDrawable = new BitmapDrawable(iconImage);
+        }else {
+
+
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+            int mColour = sp.getInt(context.getResources().getString(R.string.pref_user_colour), context.getResources().getColor(R.color.light_space_gray));
+            boolean both = cursor.getInt(
+                    cursor.getColumnIndexOrThrow(DBAdapter.KEY_GOAL_DUAL)) > 0;
+            LayerDrawable iconLayerDrawable;
+            if (!both) {
+                boolean type = cursor.getInt(
+                        cursor.getColumnIndexOrThrow(DBAdapter.KEY_TYPE)) > 0;
+                if (type) {
+                    iconLayerDrawable = (LayerDrawable) context.getResources().getDrawable(R.drawable.climb_icon);
+                    Drawable planet = (Drawable) iconLayerDrawable.findDrawableByLayerId(R.id.planetIcon);
+
+                    planet.setColorFilter(mColour, PorterDuff.Mode.MULTIPLY);
+                } else {
+                    iconLayerDrawable = (LayerDrawable) context.getResources().getDrawable(R.drawable.walk_icon);
+                    Drawable planet = (Drawable) iconLayerDrawable.findDrawableByLayerId(R.id.planetIcon);
+                    Drawable arrow = (Drawable) iconLayerDrawable.findDrawableByLayerId(R.id.walkArrow);
+
+                    float[] hsb = new float[3];
+                    Color.colorToHSV(mColour, hsb);
+
+
+                    if (hsb[2] > 0.5) {
+                        arrow.setColorFilter(context.getResources().getColor(R.color.dark_space_gray), PorterDuff.Mode.MULTIPLY);
+                    } else {
+                        arrow.setColorFilter(context.getResources().getColor(R.color.light_space_gray), PorterDuff.Mode.MULTIPLY);
+                    }
+                    planet.setColorFilter(mColour, PorterDuff.Mode.MULTIPLY);
+                }
             } else {
-                iconDrawable = (LayerDrawable) context.getResources().getDrawable(R.drawable.walk_icon);
-                Drawable planet = (Drawable) iconDrawable.findDrawableByLayerId(R.id.planetIcon);
-                Drawable arrow = (Drawable) iconDrawable.findDrawableByLayerId(R.id.walkArrow);
+                iconLayerDrawable = (LayerDrawable) context.getResources().getDrawable(R.drawable.both_icon);
+                Drawable planet = (Drawable) iconLayerDrawable.findDrawableByLayerId(R.id.planetIcon);
+                Drawable arrow = (Drawable) iconLayerDrawable.findDrawableByLayerId(R.id.walkArrow);
 
                 float[] hsb = new float[3];
                 Color.colorToHSV(mColour, hsb);
@@ -84,21 +118,9 @@ public class GoalCursorAdapter extends CursorAdapter {
                 }
                 planet.setColorFilter(mColour, PorterDuff.Mode.MULTIPLY);
             }
-        } else {
-            iconDrawable = (LayerDrawable) context.getResources().getDrawable(R.drawable.both_icon);
-            Drawable planet = (Drawable) iconDrawable.findDrawableByLayerId(R.id.planetIcon);
-            Drawable arrow = (Drawable) iconDrawable.findDrawableByLayerId(R.id.walkArrow);
 
-            float[] hsb = new float[3];
-            Color.colorToHSV(mColour, hsb);
+            iconDrawable = iconLayerDrawable;
 
-
-            if (hsb[2] > 0.5) {
-                arrow.setColorFilter(context.getResources().getColor(R.color.dark_space_gray), PorterDuff.Mode.MULTIPLY);
-            } else {
-                arrow.setColorFilter(context.getResources().getColor(R.color.light_space_gray), PorterDuff.Mode.MULTIPLY);
-            }
-            planet.setColorFilter(mColour, PorterDuff.Mode.MULTIPLY);
         }
         String titleText = cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.KEY_GOAL_TITLE));
         Long startNumber = cursor.getLong(cursor.getColumnIndexOrThrow(DBAdapter.KEY_GOAL_START));
@@ -112,9 +134,10 @@ public class GoalCursorAdapter extends CursorAdapter {
         if (walkProgress > walkTotal) {
             walkProgress = walkTotal;
         }
-        if (climbProgress > climbTotal) {
+        if ((climbProgress > climbTotal) && calorieId == null) {
             climbProgress = climbTotal;
         }
+        System.out.println(climbProgress);
         int progress = (int) (walkProgress + climbProgress);
         int goal = walkTotal + climbTotal;
         title.setText(titleText);

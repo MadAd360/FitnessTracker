@@ -306,7 +306,7 @@ public class DBAdapter {
                 KEY_GOAL_END + " ASC ";
 
         return mDb.query(GOAL_TABLE, new String[]{KEY_ROWID, KEY_GOAL_TITLE, KEY_GOAL_WALK, KEY_GOAL_CLIMB, KEY_GOAL_DUAL,
-                KEY_GOAL_WALK_UNIT, KEY_GOAL_CLIMB_UNIT, KEY_GOAL_START, KEY_GOAL_END, KEY_GOAL_COMPLETE, KEY_TYPE, KEY_GOAL_ACTIVE}, null, null, null, null, order);
+                KEY_GOAL_WALK_UNIT, KEY_GOAL_CLIMB_UNIT, KEY_GOAL_START, KEY_GOAL_END, KEY_GOAL_COMPLETE, KEY_TYPE, KEY_GOAL_ACTIVE, KEY_GOAL_CALORIE}, null, null, null, null, order);
     }
 
 
@@ -321,7 +321,8 @@ public class DBAdapter {
         }
 
         String where = DBAdapter.KEY_GOAL_ACTIVE + "=" + 1 + " AND " +
-                "(" + DBAdapter.KEY_TYPE + "=" + climb + " OR " + DBAdapter.KEY_GOAL_DUAL + "=" + 1 + ")" +
+                "(" + DBAdapter.KEY_TYPE + "=" + climb + " OR " + DBAdapter.KEY_GOAL_DUAL + "=" + 1 +
+                " OR " + DBAdapter.KEY_GOAL_CALORIE + " NOT NULL" + ")" +
                 " AND " + DBAdapter.KEY_GOAL_COMPLETE + "=" + 0 + " AND " + DBAdapter.KEY_GOAL_START + "<" + current;
 
         String order = KEY_GOAL_END + " ASC ";
@@ -339,7 +340,7 @@ public class DBAdapter {
         String order = KEY_GOAL_END + " ASC ";
 
         return mDb.query(GOAL_TABLE, new String[]{KEY_ROWID, KEY_GOAL_TITLE, KEY_GOAL_WALK, KEY_GOAL_CLIMB, KEY_GOAL_DUAL,
-                KEY_GOAL_WALK_UNIT, KEY_GOAL_CLIMB_UNIT, KEY_GOAL_START, KEY_GOAL_END, KEY_GOAL_COMPLETE, KEY_TYPE, KEY_GOAL_ACTIVE}, where, null, null, null, order);
+                KEY_GOAL_WALK_UNIT, KEY_GOAL_CLIMB_UNIT, KEY_GOAL_START, KEY_GOAL_END, KEY_GOAL_COMPLETE, KEY_TYPE, KEY_GOAL_ACTIVE, KEY_GOAL_CALORIE}, where, null, null, null, order);
     }
 
     public Cursor fetchAllActivities() {
@@ -377,7 +378,7 @@ public class DBAdapter {
 
                 mDb.query(true, GOAL_TABLE, new String[]{KEY_ROWID, KEY_GOAL_WALK, KEY_GOAL_CLIMB, KEY_GOAL_TITLE, KEY_GOAL_PREVIOUS_STATE,
                                 KEY_GOAL_WALK_UNIT, KEY_GOAL_CLIMB_UNIT, KEY_GOAL_START, KEY_GOAL_END, KEY_GOAL_COMPLETE, KEY_TYPE,
-                                KEY_GOAL_DUAL, KEY_GOAL_ACTIVE, KEY_GOAL_FACEBOOK_ID, KEY_GOAL_TWITTER_ID, KEY_GOAL_MAP}, KEY_ROWID + "=" + rowId, null,
+                                KEY_GOAL_DUAL, KEY_GOAL_ACTIVE, KEY_GOAL_FACEBOOK_ID, KEY_GOAL_TWITTER_ID, KEY_GOAL_MAP, KEY_GOAL_CALORIE}, KEY_ROWID + "=" + rowId, null,
                         null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -566,6 +567,11 @@ public class DBAdapter {
         Cursor goalCursor = fetchGoal(rowID);
         if (goalCursor.moveToFirst()) {
             String climbUnit = goalCursor.getString(goalCursor.getColumnIndexOrThrow(DBAdapter.KEY_GOAL_CLIMB_UNIT));
+            Long calorieId = goalCursor.getLong(goalCursor.getColumnIndexOrThrow(DBAdapter.KEY_GOAL_CALORIE));
+
+            if(calorieId != null){
+                climbUnit = "Calories";
+            }
 
             while (cursor.moveToNext()) {
                 Boolean climbType = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_TYPE)) > 0;
