@@ -247,6 +247,11 @@ public class moonwalk_drawer extends Activity
                     if (mapId != null) {
                         mDbHelper.updateGoalMap(goalId, mapId);
                     }
+
+                    Long calorieId = extras.getLong(DBAdapter.KEY_GOAL_CALORIE);
+                    if (calorieId != null) {
+                        mDbHelper.connectTreat(goalId, calorieId);
+                    }
                     Toast toast = Toast.makeText(this, "Goal created", Toast.LENGTH_LONG);
                     toast.show();
                     break;

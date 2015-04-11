@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 
@@ -23,6 +24,7 @@ public class CreateTreat extends Activity {
     EditText treatNameView;
     EditText treatCaloriesView;
     ImageButton treatImageView;
+    Bitmap iconImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,13 @@ public class CreateTreat extends Activity {
 
     public void confirmTreat(View view) {
         Bundle bundle = new Bundle();
+        bundle.putString(DBAdapter.KEY_TREAT_NAME, treatNameView.getText().toString());
+        bundle.putInt(DBAdapter.KEY_TREAT_CALORIES, new Integer(treatCaloriesView.getText().toString()));
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(iconImage, 300, 300, true);
+        scaledBitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+        byte[] data = outputStream.toByteArray();
+        bundle.putByteArray(DBAdapter.KEY_TREAT_IMAGE, data);
         Intent mIntent = new Intent();
         mIntent.putExtras(bundle);
         setResult(RESULT_OK, mIntent);
@@ -87,6 +96,7 @@ public class CreateTreat extends Activity {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
                 treatImageView.setImageBitmap(bitmap);
+                iconImage = bitmap;
             } catch (IOException e) {
                 e.printStackTrace();
             }

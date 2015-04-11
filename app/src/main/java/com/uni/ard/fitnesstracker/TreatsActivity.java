@@ -52,7 +52,13 @@ public class TreatsActivity extends Activity implements AdapterView.OnItemClickL
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        Bundle bundle = new Bundle();
 
+        bundle.putLong(DBAdapter.KEY_GOAL_CALORIE, id);
+
+        Intent mIntent = new Intent();
+        mIntent.putExtras(bundle);
+        setResult(RESULT_OK, mIntent);
         finish();
     }
 

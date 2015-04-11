@@ -85,6 +85,7 @@ public class GlobalVariables {
             stepsConversion.put("Metres", 5.2631578947368421052631578947368);
             stepsConversion.put("Kilometres", 5263.1578947368421052631578947368);
             stepsConversion.put("Feet", 1.6042105264508808864379689167527);
+            stepsConversion.put("Calories", 0.05);
         } else {
             //step = 76.2cm or 30 inches
             stepsConversion.put("Steps", 1.0);
@@ -92,6 +93,7 @@ public class GlobalVariables {
             stepsConversion.put("Metres", 1.3123359580052493438320209973753);
             stepsConversion.put("Kilometres", 1312.3359580052493438320209973753);
             stepsConversion.put("Feet", 0.4);
+            stepsConversion.put("Calories", 0.05);
         }
 
         double steps = value * stepsConversion.get(from);

@@ -40,6 +40,7 @@ public class DBAdapter {
     public static final String KEY_GOAL_FACEBOOK_ID = "facebookid";
     public static final String KEY_GOAL_TWITTER_ID = "twitterid";
     public static final String KEY_GOAL_MAP = "map";
+    public static final String KEY_GOAL_CALORIE = "calorie";
 
     public static final String KEY_ACTIVITY_NUMBER = "number";
     public static final String KEY_ACTIVITY_DATE = "date";
@@ -84,7 +85,8 @@ public class DBAdapter {
                     "walkunit text not null, climbunit text not null, " +
                     "start integer not null, end integer not null, complete boolean not null, climb boolean not null, " +
                     "dualType boolean not null, active boolean not null, previousstate int not null, " +
-                    "facebookid text, twitterid int, map integer, FOREIGN KEY(map) REFERENCES maps(_id) );";
+                    "facebookid text, twitterid int, map integer, calorie integer, " +
+                    "FOREIGN KEY(map) REFERENCES maps(_id),  FOREIGN KEY(calorie) REFERENCES treats(_id));";
 
     private static final String ACTIVITY_CREATE =
             "create table " + ACTIVITY_TABLE + " (_id integer primary key autoincrement, "
@@ -216,6 +218,9 @@ public class DBAdapter {
 
             String goalName = goalCursor.getString(goalCursor.getColumnIndexOrThrow(KEY_GOAL_TITLE));
 
+            Long calorieId = goalCursor.getLong(goalCursor.getColumnIndexOrThrow(KEY_GOAL_CALORIE));
+
+
             Integer walkTotal = goalCursor.getInt(goalCursor.getColumnIndexOrThrow(KEY_GOAL_WALK));
             Integer climbTotal = goalCursor.getInt(goalCursor.getColumnIndexOrThrow(KEY_GOAL_CLIMB));
             if (walkProgress == null) {
@@ -224,6 +229,12 @@ public class DBAdapter {
 
             if (climbProgress == null) {
                 climbProgress = 0.0;
+            }
+
+            if(calorieId != null){
+                walkProgress = walkProgress + climbProgress;
+                climbProgress = 0.0;
+                climbTotal = 0;
             }
 
             if (walkProgress >= walkTotal && climbProgress >= climbTotal) {
@@ -671,6 +682,19 @@ public class DBAdapter {
         return rowID;
     }
 
+    public long insertTreat(String name, byte[] image, int calories) {
+
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_TREAT_IMAGE, image);
+        initialValues.put(KEY_TREAT_NAME, name);
+        initialValues.put(KEY_TREAT_CALORIES, calories);
+
+
+        Long rowID = mDb.insert(TREAT_TABLE, null, initialValues);
+
+        return rowID;
+    }
+
     public Cursor fetchTreat(Long rowId) {
 
         Cursor mCursor =
@@ -693,5 +717,17 @@ public class DBAdapter {
             mCursor.moveToFirst();
         }
         return mCursor;
+    }
+
+    public void connectTreat(Long goalId, Long treatId){
+        ContentValues args = new ContentValues();
+        args.put(KEY_GOAL_CALORIE, treatId);
+        mDb.update(GOAL_TABLE, args, KEY_ROWID + "=" + goalId, null);
+    }
+
+    public void disconnectTreat(Long goalId){
+        ContentValues args = new ContentValues();
+        args.putNull(KEY_GOAL_CALORIE);
+        mDb.update(GOAL_TABLE, args, KEY_ROWID + "=" + goalId, null);
     }
 }

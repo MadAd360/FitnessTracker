@@ -76,6 +76,10 @@ public class EditGoal extends Activity {
     double mapEndLat;
     double mapEndLong;
 
+    boolean calorieType;
+    Long calorieId;
+    int caloriesCount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,12 +166,25 @@ public class EditGoal extends Activity {
             type = cursor.getInt(cursor.getColumnIndexOrThrow(DBAdapter.KEY_TYPE)) > 0;
             both = cursor.getInt(cursor.getColumnIndexOrThrow(DBAdapter.KEY_GOAL_DUAL)) > 0;
             mapId = cursor.getLong(cursor.getColumnIndexOrThrow(DBAdapter.KEY_GOAL_MAP));
+            calorieId = cursor.getLong(cursor.getColumnIndexOrThrow(DBAdapter.KEY_GOAL_CALORIE));
 
             if (mapId != null) {
                 mapType = true;
             } else {
+                if(calorieId != null){
+                    calorieType = true;
+                    Cursor treatCursor = mDbHelper.fetchTreat(calorieId);
+
+                    if(treatCursor.moveToFirst()){
+                        caloriesCount = treatCursor.getInt(treatCursor.getColumnIndexOrThrow(DBAdapter.KEY_TREAT_CALORIES));
+                    }
+                }else{
+                    calorieType = false;
+                }
                 mapType = false;
             }
+
+
 
             if (title != null) {
                 mTitleText.setText(title);
@@ -269,6 +286,14 @@ public class EditGoal extends Activity {
                     if (mRowId != null) {
                         mDbHelper.deleteMap(mRowId);
                     }
+                    mapId = null;
+                }
+
+                if(calorieType){
+                    typeBoth = false;
+                    typeClimb = false;
+                    walkText = caloriesCount + "";
+                    walkUnitText = "Calories";
                 }
 
 
@@ -301,7 +326,7 @@ public class EditGoal extends Activity {
                             bundle.putInt(DBAdapter.KEY_GOAL_CLIMB, new Integer(mClimbText.getText().toString()));
                             bundle.putString(DBAdapter.KEY_GOAL_CLIMB_UNIT, climbUnitText);
                         } else {
-                            bundle.putInt(DBAdapter.KEY_GOAL_WALK, new Integer(mWalkText.getText().toString()));
+                            bundle.putInt(DBAdapter.KEY_GOAL_WALK, new Integer(walkText));
                             bundle.putString(DBAdapter.KEY_GOAL_WALK_UNIT, walkUnitText);
                             bundle.putInt(DBAdapter.KEY_GOAL_CLIMB, 0);
                             bundle.putString(DBAdapter.KEY_GOAL_CLIMB_UNIT, "Steps");
@@ -310,8 +335,11 @@ public class EditGoal extends Activity {
                         bundle.putLong(DBAdapter.KEY_GOAL_END, endNumber);
                         bundle.putBoolean(DBAdapter.KEY_TYPE, typeClimb);
                         bundle.putBoolean(DBAdapter.KEY_GOAL_DUAL, typeBoth);
-                        if (mapId != null) {
+                        if (mapType) {
                             bundle.putLong(DBAdapter.KEY_GOAL_MAP, mapId);
+                        }
+                        if(calorieType){
+                            bundle.putLong(DBAdapter.KEY_GOAL_CALORIE, calorieId);
                         }
                         if (mRowId != null) {
                             bundle.putLong(DBAdapter.KEY_ROWID, mRowId);
@@ -505,6 +533,8 @@ public class EditGoal extends Activity {
 
     public void selectCustom(View v) {
         mapType = false;
+        calorieType = false;
+        calorieId = null;
         mCustomLayout.setVisibility(View.VISIBLE);
     }
 
@@ -527,6 +557,8 @@ public class EditGoal extends Activity {
                 mapEndLat = extras.getDouble(DBAdapter.KEY_MAP_END_LAT);
                 mapEndLong = extras.getDouble(DBAdapter.KEY_MAP_END_LONG);
                 mapType = true;
+                calorieType = false;
+                mapId = null;
                 mTypeSwitch.setChecked(false);
                 mTypeBothSwitch.setChecked(false);
 
@@ -536,6 +568,15 @@ public class EditGoal extends Activity {
                     walkSpinner.setSelection(walkAdapter.getPosition(newUnit));
                 }
             }else if(requestCode == CALORIE_ID){
+                mapType = false;
+                calorieType = true;
+                Bundle extras = intent.getExtras();
+                calorieId = extras.getLong(DBAdapter.KEY_GOAL_CALORIE);
+                Cursor cursor = mDbHelper.fetchTreat(calorieId);
+
+                if(cursor.moveToFirst()){
+                    caloriesCount = cursor.getInt(cursor.getColumnIndexOrThrow(DBAdapter.KEY_TREAT_CALORIES));
+                }
                 //sort out calorie stuff
             }
         }
