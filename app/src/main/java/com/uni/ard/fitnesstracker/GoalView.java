@@ -4,8 +4,12 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.net.ConnectivityManager;
@@ -13,6 +17,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +44,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -65,6 +71,11 @@ public class GoalView extends Fragment {
     private TextView mStatusText;
     private ImageView icon;
 
+    private View calorieLayout;
+    private ImageView shadowCalorieView;
+    private ImageView progressCalorieView;
+    private TextView calorieTextProgress;
+
     DateFormat dateFormat;
     DateFormat timeFormat;
 
@@ -82,6 +93,7 @@ public class GoalView extends Fragment {
     Long rowId;
     int statusNumber;
     Long mapId;
+    Long calorieId;
 
     private GoogleMap mMap;
     private Polyline targetPath;
@@ -120,6 +132,7 @@ public class GoalView extends Fragment {
 
         Cursor cursor = mDbHelper.fetchGoal(rowId);
         mapId = cursor.getLong(cursor.getColumnIndexOrThrow(DBAdapter.KEY_GOAL_MAP));
+        calorieId = cursor.getLong(cursor.getColumnIndexOrThrow(DBAdapter.KEY_GOAL_CALORIE));
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         boolean mapDisable = sp.getBoolean(getResources().getString(R.string.pref_map_disable), false);
 
@@ -151,18 +164,26 @@ public class GoalView extends Fragment {
         progressLayout = view.findViewById(R.id.progressLayout);
         mapLayout = view.findViewById(R.id.mapLayout);
         mapProgressText = (TextView) view.findViewById(R.id.mapProgress);
+        calorieLayout = view.findViewById(R.id.calorieLayout);
+        shadowCalorieView = (ImageView) view.findViewById(R.id.shadowCalorieImage);
+        progressCalorieView = (ImageView) view.findViewById(R.id.progressCalorieImage);
+        calorieTextProgress = (TextView) view.findViewById(R.id.calorieTextProgress);
 
-
-        if (mapId == 0) {
-            mapLayout.setVisibility(View.GONE);
-        } else {
+        if (mapId != 0) {
             mapView = (MapView) view.findViewById(R.id.map);
             progressLayout.setVisibility(View.GONE);
+            calorieLayout.setVisibility(View.GONE);
             mapView.onCreate(savedInstanceState);
             mMap = mapView.getMap();
 
             MapsInitializer.initialize(getActivity());
-
+        } else if(calorieId != 0){
+            mapLayout.setVisibility(View.GONE);
+            progressLayout.setVisibility(View.GONE);
+            icon.setVisibility(View.GONE);
+        }else {
+            mapLayout.setVisibility(View.GONE);
+            calorieLayout.setVisibility(View.GONE);
         }
 
 
@@ -226,41 +247,72 @@ public class GoalView extends Fragment {
 
         mTitleText.setText(title);
         if (mapId == 0) {
-            if (type || both) {
-                String climbProgressFormat = df.format(climbProgress);
-                mTargetClimbText.setText(climbProgressFormat + " of " + climbTotal);
-                mUnitClimbText.setText(climbUnit);
+            if(calorieId == 0) {
+                if (type || both) {
+                    String climbProgressFormat = df.format(climbProgress);
+                    mTargetClimbText.setText(climbProgressFormat + " of " + climbTotal);
+                    mUnitClimbText.setText(climbUnit);
 
-                LayerDrawable progressDrawable = (LayerDrawable) getActivity().getResources().getDrawable(R.drawable.custom_progress);
-                Drawable progressCircle = (Drawable) progressDrawable.findDrawableByLayerId(android.R.id.progress);
-                progressCircle.setColorFilter(mColour, PorterDuff.Mode.MULTIPLY);
+                    LayerDrawable progressDrawable = (LayerDrawable) getActivity().getResources().getDrawable(R.drawable.custom_progress);
+                    Drawable progressCircle = (Drawable) progressDrawable.findDrawableByLayerId(android.R.id.progress);
+                    progressCircle.setColorFilter(mColour, PorterDuff.Mode.MULTIPLY);
 
-                mTargetClimbProgress.setProgressDrawable(progressDrawable);
-                mTargetClimbProgress.setProgress((int) climbProgress);
-                mTargetClimbProgress.setMax(climbTotal);
-                climbLayout.setVisibility(View.VISIBLE);
-            } else {
-                climbLayout.setVisibility(View.GONE);
+                    mTargetClimbProgress.setProgressDrawable(progressDrawable);
+                    mTargetClimbProgress.setProgress((int) climbProgress);
+                    mTargetClimbProgress.setMax(climbTotal);
+                    climbLayout.setVisibility(View.VISIBLE);
+                } else {
+                    climbLayout.setVisibility(View.GONE);
 
+                }
+
+                if (!type || both) {
+                    String walkProgressFormat = df.format(walkProgress);
+                    mTargetWalkText.setText(walkProgressFormat + " of " + walkTotal);
+                    mUnitWalkText.setText(walkUnit);
+
+                    LayerDrawable progressDrawable = (LayerDrawable) getActivity().getResources().getDrawable(R.drawable.custom_progress);
+                    Drawable progressCircle = (Drawable) progressDrawable.findDrawableByLayerId(android.R.id.progress);
+                    progressCircle.setColorFilter(mColour, PorterDuff.Mode.MULTIPLY);
+
+                    mTargetWalkProgress.setProgressDrawable(progressDrawable);
+                    mTargetWalkProgress.setProgress((int) walkProgress);
+                    mTargetWalkProgress.setMax(walkTotal);
+                    walkLayout.setVisibility(View.VISIBLE);
+                } else {
+                    walkLayout.setVisibility(View.GONE);
+                }
+            }else {
+                Cursor treatCursor = mDbHelper.fetchTreat(calorieId);
+                byte[] imageByteArray = treatCursor.getBlob(treatCursor.getColumnIndexOrThrow(DBAdapter.KEY_TREAT_IMAGE));
+
+                ByteArrayInputStream imageStream = new ByteArrayInputStream(imageByteArray);
+                Bitmap iconImage= BitmapFactory.decodeStream(imageStream);
+                Drawable calorieDrawable = new BitmapDrawable(iconImage);
+                Drawable shadowCalorieDrawable = new BitmapDrawable(iconImage);
+                shadowCalorieDrawable.setColorFilter(0x88888888, PorterDuff.Mode.MULTIPLY);
+                Drawable progressCalorieDrawable = new ClipDrawable(calorieDrawable, Gravity.BOTTOM,
+                        ClipDrawable.VERTICAL);
+
+                double progressTotal = walkProgress + climbProgress;
+
+                int percentageDrawable = (int)((progressTotal/walkTotal)*10000);
+
+                if(percentageDrawable > 10000){
+                    percentageDrawable = 10000;
+                }
+
+                shadowCalorieView.setImageDrawable(shadowCalorieDrawable);
+                progressCalorieView.setImageDrawable(progressCalorieDrawable);
+
+                progressCalorieDrawable.setLevel(percentageDrawable);
+
+                calorieTextProgress.setText("Burned " + (int) progressTotal + " of " + walkTotal + " Calories");
+
+                //set calorie progress
             }
 
-            if (!type || both) {
-                String walkProgressFormat = df.format(walkProgress);
-                mTargetWalkText.setText(walkProgressFormat + " of " + walkTotal);
-                mUnitWalkText.setText(walkUnit);
-
-                LayerDrawable progressDrawable = (LayerDrawable) getActivity().getResources().getDrawable(R.drawable.custom_progress);
-                Drawable progressCircle = (Drawable) progressDrawable.findDrawableByLayerId(android.R.id.progress);
-                progressCircle.setColorFilter(mColour, PorterDuff.Mode.MULTIPLY);
-
-                mTargetWalkProgress.setProgressDrawable(progressDrawable);
-                mTargetWalkProgress.setProgress((int) walkProgress);
-                mTargetWalkProgress.setMax(walkTotal);
-                walkLayout.setVisibility(View.VISIBLE);
-            } else {
-                walkLayout.setVisibility(View.GONE);
-            }
-        } else {
+         } else {
             Cursor mapCursor = mDbHelper.fetchMap(mapId);
 
             mapCursor.moveToFirst();

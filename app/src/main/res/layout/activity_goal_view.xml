@@ -79,6 +79,40 @@
 
             </RelativeLayout>
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/calorieLayout">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@+id/calorieTextProgress">
+
+                        <ImageView
+                            android:id="@+id/shadowCalorieImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                        <ImageView
+                            android:id="@+id/progressCalorieImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/calorieTextProgress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Walked x"
+                        android:textColor="@color/dark_space_gray"
+                        android:gravity="center_horizontal"
+                        android:textSize="18sp"
+                        android:layout_alignParentBottom="true"/>
+
+                </RelativeLayout>
+
             <LinearLayout
                 android:id="@+id/progressLayout"
                 android:layout_width="match_parent"
