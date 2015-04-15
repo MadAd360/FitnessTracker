@@ -168,18 +168,18 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
     @Override
     public void onResume() {
         super.onResume();
+        mReceiver = new OpponentReceiver(mManager, mChannel, this);
         getActivity().registerReceiver(mReceiver, mIntentFilter);
-
-        mManager.stopPeerDiscovery(mChannel, mActionListener);
         mManager.discoverPeers(mChannel, mActionListener);
+        //refresh();
     }
 
     /* unregister the broadcast receiver */
     @Override
     public void onPause() {
         super.onPause();
-        getActivity().unregisterReceiver(mReceiver);
         mManager.stopPeerDiscovery(mChannel, mActionListener);
+        getActivity().unregisterReceiver(mReceiver);
     }
 
 
@@ -258,7 +258,7 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
                     toast.show();
 
                     //Send crap
-                    
+
                     break;
             }
         }
@@ -285,4 +285,18 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
         });
 
     }
+
+    public void refresh() {
+
+
+        List<String> namesList = new ArrayList<String>();
+        for (WifiP2pDevice w : peers) {
+            namesList.add(w.deviceName);
+        }
+
+
+    mAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, namesList);
+    mListView.setAdapter(mAdapter);
+    }
+
 }
