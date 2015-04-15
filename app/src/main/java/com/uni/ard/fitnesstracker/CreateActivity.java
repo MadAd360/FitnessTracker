@@ -2,12 +2,14 @@ package com.uni.ard.fitnesstracker;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -187,11 +189,51 @@ public class CreateActivity extends Activity {
             startActivity(enableBtIntent);
         }
 
-        if(!mBluetoothAdapter.isEnabled()){
-            Log.d("Bluetooth", "enabled");
+    }
 
-        }else{
-            Log.d("Bluetooth", "disabled");
+
+    private BluetoothAdapter mBluetoothAdapter;
+    private boolean mScanning;
+    private Handler mHandler;
+
+    // Stops scanning after 10 seconds.
+    private static final long SCAN_PERIOD = 10000;
+    private void scanLeDevice(final boolean enable) {
+
+        final BluetoothAdapter.LeScanCallback mLeScanCallback =
+                new BluetoothAdapter.LeScanCallback() {
+                    @Override
+                    public void onLeScan(final BluetoothDevice device, int rssi,
+                                         byte[] scanRecord) {
+                        Log.d("BlueDevice", device.getName());
+                        Log.d("BlueDevice", device.getUuids().toString());
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                mLeDeviceListAdapter.addDevice(device);
+//                                mLeDeviceListAdapter.notifyDataSetChanged();
+//                            }
+//                        });
+                    }
+                };
+
+        if (enable) {
+            // Stops scanning after a pre-defined scan period.
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mScanning = false;
+                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                }
+            }, SCAN_PERIOD);
+
+            mScanning = true;
+            mBluetoothAdapter.startLeScan(mLeScanCallback);
+        } else {
+            mScanning = false;
+            mBluetoothAdapter.stopLeScan(mLeScanCallback);
         }
+
+
     }
 }
