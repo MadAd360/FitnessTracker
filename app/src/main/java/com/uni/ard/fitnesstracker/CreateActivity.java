@@ -1,12 +1,16 @@
 package com.uni.ard.fitnesstracker;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -170,5 +174,24 @@ public class CreateActivity extends Activity {
     public void cancelGoal(View view) {
         setResult(Activity.RESULT_CANCELED);
         finish();
+    }
+
+    public void trackCalories(View view){
+        final BluetoothManager bluetoothManager =
+                (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
+
+        // displays a dialog requesting user permission to enable Bluetooth.
+        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivity(enableBtIntent);
+        }
+
+        if(!mBluetoothAdapter.isEnabled()){
+            Log.d("Bluetooth", "enabled");
+
+        }else{
+            Log.d("Bluetooth", "disabled");
+        }
     }
 }

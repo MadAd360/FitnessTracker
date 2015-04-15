@@ -65,6 +65,19 @@
         android:background="@drawable/curved_rectangle"
         android:textColor="@color/dark_space_gray"/>
 
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@android:dimen/notification_large_icon_height"
+        android:text="Track Calories"
+        android:id="@+id/trackCalories"
+        android:onClick="trackCalories"
+        android:background="@drawable/curved_rectangle"
+        android:layout_marginTop="8dp"
+        android:textColor="#ff333333"
+        android:clickable="true" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
