@@ -1,6 +1,5 @@
 package com.uni.ard.fitnesstracker;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
@@ -72,7 +71,7 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
 
         mManager = (WifiP2pManager) getActivity().getSystemService(Context.WIFI_P2P_SERVICE);
         mChannel = mManager.initialize(getActivity().getBaseContext(), getActivity().getMainLooper(), null);
-        mReceiver = new OpponenentReciever(mManager, mChannel, this);
+        mReceiver = new OpponentReceiver(mManager, mChannel, this);
 
 
 

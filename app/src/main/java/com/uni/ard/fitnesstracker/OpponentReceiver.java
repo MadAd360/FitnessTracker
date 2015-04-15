@@ -7,15 +7,15 @@ import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
 
-public class OpponenentReciever extends BroadcastReceiver {
+public class OpponentReceiver extends BroadcastReceiver {
     private WifiP2pManager mManager;
     private WifiP2pManager.Channel mChannel;
     private WifiP2pManager.PeerListListener peerListListener;
 
     WifiP2pManager.PeerListListener myPeerListListener;
 
-    public OpponenentReciever(WifiP2pManager manager, WifiP2pManager.Channel channel,
-                              OpponentFragment activity) {
+    public OpponentReceiver(WifiP2pManager manager, WifiP2pManager.Channel channel,
+                            OpponentFragment activity) {
         super();
         this.mManager = manager;
         this.mChannel = channel;

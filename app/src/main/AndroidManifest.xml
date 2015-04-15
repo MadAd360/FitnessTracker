@@ -117,7 +117,7 @@
         </activity>
 
         <receiver
-            android:name=".OpponenentReciever"
+            android:name=".OpponentReceiver"
             android:enabled="true"
             android:exported="true" >
         </receiver>
