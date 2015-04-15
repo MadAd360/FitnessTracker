@@ -143,10 +143,9 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d("WiFi", "Item Clicked");
+        Log.d("WiFi", "Item Clicked - " + position);
 
-        //EditGoal sharedGoal = new EditGoal();
-        connect(peers.get(0));
+        connect(peers.get(position));
         Intent i = new Intent(getActivity(), EditGoal.class);
         startActivityForResult(i, ACTIVITY_CREATE);
 
@@ -171,7 +170,6 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
         mReceiver = new OpponentReceiver(mManager, mChannel, this);
         getActivity().registerReceiver(mReceiver, mIntentFilter);
         mManager.discoverPeers(mChannel, mActionListener);
-        //refresh();
     }
 
     /* unregister the broadcast receiver */
@@ -267,7 +265,6 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
     private void connect(WifiP2pDevice device) {
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = device.deviceAddress;
-        //config.wps.setup = WpsInfo.PBC;
 
         Log.d("Connect", device.deviceAddress);
 
@@ -283,20 +280,20 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
                 Toast.makeText(getActivity(), "Connect failed. Retry.", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
-    public void refresh() {
+    private void disconnect() {
+        mManager.cancelConnect(mChannel, new WifiP2pManager.ActionListener() {
 
+            @Override
+            public void onSuccess() {
+                Toast.makeText(getActivity(), "Disconnect success", Toast.LENGTH_SHORT).show();
+            }
 
-        List<String> namesList = new ArrayList<String>();
-        for (WifiP2pDevice w : peers) {
-            namesList.add(w.deviceName);
-        }
-
-
-    mAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, namesList);
-    mListView.setAdapter(mAdapter);
+            @Override
+            public void onFailure(int reason) {
+                Toast.makeText(getActivity(), "Disconnect failed. Retry.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
-
 }
