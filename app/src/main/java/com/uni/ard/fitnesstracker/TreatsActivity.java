@@ -22,7 +22,7 @@ public class TreatsActivity extends Activity implements AdapterView.OnItemClickL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_activitylist_grid);
+        setContentView(R.layout.fragment_treat_select);
         setTitle("Select Treat Goal");
 
 
@@ -59,6 +59,10 @@ public class TreatsActivity extends Activity implements AdapterView.OnItemClickL
         Intent mIntent = new Intent();
         mIntent.putExtras(bundle);
         setResult(RESULT_OK, mIntent);
+        finish();
+    }
+
+    public void cancelTreat(View v){
         finish();
     }
 

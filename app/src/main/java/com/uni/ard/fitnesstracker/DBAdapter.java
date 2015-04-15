@@ -2,12 +2,14 @@ package com.uni.ard.fitnesstracker;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -240,6 +242,10 @@ public class DBAdapter {
             if (walkProgress >= walkTotal && climbProgress >= climbTotal) {
                 GlobalVariables.createNotification(goalNumber, goalName, GlobalVariables.GOAL_MODE_COMPLETED, mCtx);
                 updateGoalComplete(goalNumber, true);
+                SharedPreferences sp = PreferenceManager
+                        .getDefaultSharedPreferences(mCtx);
+                int freeCalories = sp.getInt("pref_calorie_free", 0);
+                sp.edit().putInt("pref_calorie_free", freeCalories + walkTotal + climbTotal).apply();
             }
         }
         return rowID;

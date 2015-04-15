@@ -35,6 +35,7 @@ public class moonwalk_drawer extends Activity
 
     private static final int ACTIVITY_CREATE = 0;
     private static final int ACTIVITY_LOG = 1;
+    private static final int TREAT_CREATE = 3;
 
     private DBAdapter mDbHelper;
 
@@ -168,6 +169,9 @@ public class moonwalk_drawer extends Activity
         } else if (item.getItemId() == R.id.action_settings) {
             Intent i = new Intent(this, SettingsActivity.class);
             startActivity(i);
+        }else if (item.getItemId() == R.id.add_treat) {
+            Intent i = new Intent(this, CreateTreat.class);
+            startActivityForResult(i, TREAT_CREATE);
         }
 
         return super.onOptionsItemSelected(item);
@@ -180,9 +184,15 @@ public class moonwalk_drawer extends Activity
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.moonwalk_drawer, menu);
-            restoreActionBar();
-            return true;
+            if(mTitle.equals("Treats")){
+                getMenuInflater().inflate(R.menu.moonwalk_drawer_treat, menu);
+                restoreActionBar();
+                return true;
+            }else {
+                getMenuInflater().inflate(R.menu.moonwalk_drawer, menu);
+                restoreActionBar();
+                return true;
+            }
         }
         return super.onCreateOptionsMenu(menu);
     }

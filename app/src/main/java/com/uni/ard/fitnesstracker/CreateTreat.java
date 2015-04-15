@@ -95,7 +95,8 @@ public class CreateTreat extends Activity {
             Uri selectedImageUri = intent.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
-                treatImageView.setImageBitmap(bitmap);
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true);
+                treatImageView.setImageBitmap(scaledBitmap);
                 iconImage = bitmap;
             } catch (IOException e) {
                 e.printStackTrace();

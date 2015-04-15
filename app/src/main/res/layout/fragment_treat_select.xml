@@ -10,30 +10,17 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     tools:context="com.uni.ard.fitnesstracker.ActivityListFragment">
 
-
-
-    <TextView
-        android:id="@+id/caloriesFree"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:gravity="center_horizontal"
-        android:layout_alignParentTop="true"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:textSize="18sp"
-        android:layout_marginBottom="4dp"/>
-
     <GridView
         android:id="@android:id/list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:numColumns="auto_fit"
         android:divider="@android:color/transparent"
+        android:layout_alignParentTop="true"
         android:verticalSpacing="8dp"
         android:horizontalSpacing="8dp"
         android:columnWidth="100dp"
-        android:layout_above="@+id/addTreat"
-        android:layout_below="@+id/caloriesFree"/>
+        android:layout_above="@+id/addTreat"  />
 
     <TextView
         android:id="@android:id/empty"
@@ -41,7 +28,20 @@
         android:layout_height="match_parent"
         android:text="No Treats"
         android:gravity="center"
-        android:layout_above="@+id/addTreat"
-        android:layout_below="@+id/caloriesFree"/>
+        android:layout_above="@+id/addTreat"/>
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="@android:dimen/notification_large_icon_height"
+        android:text="Cancel"
+        android:id="@+id/addTreat"
+        android:background="@drawable/curved_rectangle"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:onClick="cancelTreat"
+        android:layout_alignParentBottom="true"
+        android:textColor="#ff333333"
+        android:clickable="true" />
 
 </RelativeLayout>
