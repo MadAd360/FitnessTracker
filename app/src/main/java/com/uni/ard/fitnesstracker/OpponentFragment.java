@@ -93,6 +93,8 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
         mChannel = mManager.initialize(getActivity().getBaseContext(), getActivity().getMainLooper(), null);
         mReceiver = new OpponentReceiver(mManager, mChannel, this);
 
+
+
         mIntentFilter = new IntentFilter();
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
@@ -144,8 +146,10 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
         Log.d("WiFi", "Item Clicked");
 
         //EditGoal sharedGoal = new EditGoal();
+        connect(peers.get(0));
         Intent i = new Intent(getActivity(), EditGoal.class);
         startActivityForResult(i, ACTIVITY_CREATE);
+
     }
 
     /**
@@ -165,6 +169,8 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
     public void onResume() {
         super.onResume();
         getActivity().registerReceiver(mReceiver, mIntentFilter);
+
+        mManager.stopPeerDiscovery(mChannel, mActionListener);
         mManager.discoverPeers(mChannel, mActionListener);
     }
 
@@ -252,8 +258,7 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
                     toast.show();
 
                     //Send crap
-                    connect(peers.get(0));
-
+                    
                     break;
             }
         }
@@ -262,7 +267,9 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
     private void connect(WifiP2pDevice device) {
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = device.deviceAddress;
-        config.wps.setup = WpsInfo.PBC;
+        //config.wps.setup = WpsInfo.PBC;
+
+        Log.d("Connect", device.deviceAddress);
 
         mManager.connect(mChannel, config, new WifiP2pManager.ActionListener() {
 
