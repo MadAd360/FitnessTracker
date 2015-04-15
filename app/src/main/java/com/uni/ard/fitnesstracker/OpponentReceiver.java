@@ -12,8 +12,6 @@ public class OpponentReceiver extends BroadcastReceiver {
     private WifiP2pManager.Channel mChannel;
     private WifiP2pManager.PeerListListener peerListListener;
 
-    WifiP2pManager.PeerListListener myPeerListListener;
-
     public OpponentReceiver(WifiP2pManager manager, WifiP2pManager.Channel channel,
                             OpponentFragment activity) {
         super();
@@ -43,7 +41,7 @@ public class OpponentReceiver extends BroadcastReceiver {
             // callback on PeerListListener.onPeersAvailable()
             Log.d("WiFi", "peers");
             if (mManager != null) {
-                mManager.requestPeers(mChannel, myPeerListListener);
+                mManager.requestPeers(mChannel, peerListListener);
             }
             // Call WifiP2pManager.requestPeers() to get a list of current peers
         } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {

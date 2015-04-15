@@ -37,6 +37,24 @@ public class CreateActivity extends Activity {
 
     private boolean goalSet = false;
 
+    BluetoothAdapter mBluetoothAdapter;
+    BluetoothAdapter.LeScanCallback mLeScanCallback =
+            new BluetoothAdapter.LeScanCallback() {
+                @Override
+                public void onLeScan(final BluetoothDevice device, int rssi,
+                                     byte[] scanRecord) {
+                    Log.d("BlueDevice", device.getName());
+                    scanLeDevice(false);
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                mLeDeviceListAdapter.addDevice(device);
+//                                mLeDeviceListAdapter.notifyDataSetChanged();
+//                            }
+//                        });
+                }
+            };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -181,7 +199,7 @@ public class CreateActivity extends Activity {
     public void trackCalories(View view){
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-        BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
+        mBluetoothAdapter = bluetoothManager.getAdapter();
 
         // displays a dialog requesting user permission to enable Bluetooth.
         if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
@@ -189,33 +207,18 @@ public class CreateActivity extends Activity {
             startActivity(enableBtIntent);
         }
 
+        scanLeDevice(true);
+
     }
 
-
-    private BluetoothAdapter mBluetoothAdapter;
     private boolean mScanning;
-    private Handler mHandler;
+    private Handler mHandler = new Handler();
 
     // Stops scanning after 10 seconds.
     private static final long SCAN_PERIOD = 10000;
     private void scanLeDevice(final boolean enable) {
 
-        final BluetoothAdapter.LeScanCallback mLeScanCallback =
-                new BluetoothAdapter.LeScanCallback() {
-                    @Override
-                    public void onLeScan(final BluetoothDevice device, int rssi,
-                                         byte[] scanRecord) {
-                        Log.d("BlueDevice", device.getName());
-                        Log.d("BlueDevice", device.getUuids().toString());
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                mLeDeviceListAdapter.addDevice(device);
-//                                mLeDeviceListAdapter.notifyDataSetChanged();
-//                            }
-//                        });
-                    }
-                };
+
 
         if (enable) {
             // Stops scanning after a pre-defined scan period.
