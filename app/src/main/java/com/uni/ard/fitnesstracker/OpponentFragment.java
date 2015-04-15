@@ -121,8 +121,8 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
         };
 
 
-        mManager.stopPeerDiscovery(mChannel, mActionListener);
-        mManager.discoverPeers(mChannel, mActionListener);
+        //mManager.stopPeerDiscovery(mChannel, mActionListener);
+        //mManager.discoverPeers(mChannel, mActionListener);
     }
 
     @Override
