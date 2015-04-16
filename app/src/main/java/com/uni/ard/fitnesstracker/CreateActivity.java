@@ -241,10 +241,11 @@ public class CreateActivity extends Activity {
             Log.d("BlueDevice", "START READ");
             //BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(UUID_HEART_RATE_MEASUREMENT, BluetoothGattCharacteristic.PROPERTY_READ, BluetoothGattCharacteristic.PERMISSION_READ);
             //mBluetoothGatt.setCharacteristicNotification(characteristic, true);
+            //mBluetoothGatt.readCharacteristic(characteristic);
             Log.d("Bluetooth", characteristic.getService()+"");
             Log.d("Bluetooth", characteristic.getUuid()+"");
-            int format = BluetoothGattCharacteristic.FORMAT_UINT8;
-        final int heartRate = characteristic.getIntValue(format, 1);
+            int format = BluetoothGattCharacteristic.FORMAT_UINT16;
+            final int heartRate = characteristic.getIntValue(format, 1);
             Log.d("Bluetooth", heartRate + "");
         }
 
