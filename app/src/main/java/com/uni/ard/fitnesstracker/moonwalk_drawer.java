@@ -325,7 +325,7 @@ public class moonwalk_drawer extends Activity
 
             @Override
             public void onFailure(int reason) {
-                Log.d("WiFi", "Disconnect failure");
+                Log.d("WiFi", "Disconnect failure: " + reason);
             }
         });
     }

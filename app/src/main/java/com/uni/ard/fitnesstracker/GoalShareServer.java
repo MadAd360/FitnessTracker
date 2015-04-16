@@ -31,8 +31,9 @@ public class GoalShareServer extends AsyncTask {
              * call blocks until a connection is accepted from a client
              */
             ServerSocket serverSocket = new ServerSocket(8888);
+            Log.d("Server", "Server running");
             Socket client = serverSocket.accept();
-
+            Log.d("Server", "Accepted");
             /**
              * If this code is reached, a client has connected and transferred data
              * Save the input stream from the client as a JPEG file
