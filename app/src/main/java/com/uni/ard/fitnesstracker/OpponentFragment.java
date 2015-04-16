@@ -90,7 +90,7 @@ private GoalShareServer mGoalShareServer;
 
         }
 
-        mGoalShareServer = new GoalShareServer();
+        //mGoalShareServer = new GoalShareServer();
 
         mDbHelper = new DBAdapter(getActivity());
         mDbHelper.open();
@@ -101,7 +101,7 @@ private GoalShareServer mGoalShareServer;
 
         mManager = (WifiP2pManager) getActivity().getSystemService(Context.WIFI_P2P_SERVICE);
         mChannel = mManager.initialize(getActivity().getBaseContext(), getActivity().getMainLooper(), null);
-        mReceiver = new OpponentReceiver(mManager, mChannel, this);
+        //mReceiver = new OpponentReceiver(mManager, mChannel, this);
 
 
         mIntentFilter = new IntentFilter();
@@ -180,6 +180,7 @@ private GoalShareServer mGoalShareServer;
         mReceiver = new OpponentReceiver(mManager, mChannel, this);
         getActivity().registerReceiver(mReceiver, mIntentFilter);
         mManager.discoverPeers(mChannel, mActionListener);
+        Log.d("Wifi", "Registered receiver");
     }
 
     /* unregister the broadcast receiver */
@@ -188,10 +189,18 @@ private GoalShareServer mGoalShareServer;
         super.onPause();
         mManager.stopPeerDiscovery(mChannel, mActionListener);
         getActivity().unregisterReceiver(mReceiver);
-        disconnect();
+        //disconnect();
         mGoalShareServer = null;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mManager.stopPeerDiscovery(mChannel, mActionListener);
+        getActivity().unregisterReceiver(mReceiver);
+        disconnect();
+        mGoalShareServer = null;
+    }
 
     @Override
     public void onPeersAvailable(WifiP2pDeviceList peerList) {
