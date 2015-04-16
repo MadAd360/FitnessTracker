@@ -313,12 +313,16 @@ private GoalShareServer mGoalShareServer;
             @Override
             public void onSuccess() {
                 connectedPeers = new ArrayList<WifiP2pDevice>();
-                Toast.makeText(getActivity(), "Disconnect success", Toast.LENGTH_SHORT).show();
+                if(getActivity() != null) {
+                    Toast.makeText(getActivity(), "Disconnect success", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(int reason) {
-                Toast.makeText(getActivity(), "Disconnect failed. Retry.", Toast.LENGTH_SHORT).show();
+                if(getActivity() != null) {
+                    Toast.makeText(getActivity(), "Disconnect failed. Retry.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
