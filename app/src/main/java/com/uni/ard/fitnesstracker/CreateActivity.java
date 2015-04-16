@@ -243,7 +243,9 @@ public class CreateActivity extends Activity {
             //mBluetoothGatt.setCharacteristicNotification(characteristic, true);
             Log.d("Bluetooth", characteristic.getService()+"");
             Log.d("Bluetooth", characteristic.getUuid()+"");
-            Log.d("Bluetooth", mBluetoothGatt.readCharacteristic(characteristic) + "");
+            int format = BluetoothGattCharacteristic.FORMAT_UINT8;
+        final int heartRate = characteristic.getIntValue(format, 1);
+            Log.d("Bluetooth", heartRate + "");
         }
 
 
