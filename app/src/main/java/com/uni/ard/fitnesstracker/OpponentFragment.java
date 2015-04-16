@@ -51,6 +51,7 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
     WifiP2pManager.ActionListener mActionListener;
 
     private List<WifiP2pDevice> peers = new ArrayList<WifiP2pDevice>();
+    private List<WifiP2pDevice> connectedPeers = new ArrayList<WifiP2pDevice>();
 
     private static final int ACTIVITY_CREATE = 0;
     private static final int ACTIVITY_LOG = 1;
@@ -197,8 +198,19 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
             Log.d("WiFi", "No devices found");
         } else {
             Log.d("WiFi", "Devices found");
-            for (WifiP2pDevice w : peers) {
-                namesList.add(w.deviceName);
+            for (WifiP2pDevice connectedPeer : connectedPeers) {
+                namesList.add(connectedPeer.deviceName + " (Connected)");
+            }
+            for (WifiP2pDevice peer : peers) {
+                boolean connected = false;
+                for (WifiP2pDevice connectedPeer : connectedPeers) {
+                    if(peer.equals(connectedPeer)) {
+                        connected = true;
+                    }
+                }
+                if(!connected) {
+                    namesList.add(peer.deviceName);
+                }
             }
         }
 
@@ -262,7 +274,7 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
         }
     }
 
-    private void connect(WifiP2pDevice device) {
+    private void connect(final WifiP2pDevice device) {
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = device.deviceAddress;
 
@@ -272,6 +284,7 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
 
             @Override
             public void onSuccess() {
+                connectedPeers.add(device);
                 Toast.makeText(getActivity(), "Connect success", Toast.LENGTH_SHORT).show();
             }
 
@@ -287,6 +300,7 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
 
             @Override
             public void onSuccess() {
+                connectedPeers = new ArrayList<WifiP2pDevice>();
                 Toast.makeText(getActivity(), "Disconnect success", Toast.LENGTH_SHORT).show();
             }
 
