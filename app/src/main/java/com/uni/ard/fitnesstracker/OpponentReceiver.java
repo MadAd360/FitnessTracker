@@ -18,6 +18,7 @@ public class OpponentReceiver extends BroadcastReceiver {
         this.mManager = manager;
         this.mChannel = channel;
         this.peerListListener = activity;
+        Log.d("WiFi", "Created receiver");
     }
 
     @Override
@@ -49,8 +50,6 @@ public class OpponentReceiver extends BroadcastReceiver {
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
             // Respond to this device's wifi state changing
         }
-
-
     }
 
 //    public void discoverDevices(){

@@ -197,7 +197,6 @@ private GoalShareServer mGoalShareServer;
     public void onDestroy() {
         super.onDestroy();
         mManager.stopPeerDiscovery(mChannel, mActionListener);
-        getActivity().unregisterReceiver(mReceiver);
         disconnect();
         mGoalShareServer = null;
     }
@@ -206,7 +205,6 @@ private GoalShareServer mGoalShareServer;
     public void onPeersAvailable(WifiP2pDeviceList peerList) {
         peers.clear();
         peers.addAll(peerList.getDeviceList());
-
 
         // If an AdapterView is backed by this data, notify it
         // of the change.  For instance, if you have a ListView of available
