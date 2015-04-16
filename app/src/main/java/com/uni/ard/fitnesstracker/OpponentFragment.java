@@ -50,7 +50,7 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
     private AbsListView mListView;
 
     private ListAdapter mAdapter;
-private GoalShareServer mGoalShareServer;
+    private GoalShareServer mGoalShareServer;
 
     WifiP2pManager mManager;
     WifiP2pManager.Channel mChannel;
@@ -59,7 +59,6 @@ private GoalShareServer mGoalShareServer;
     WifiP2pManager.ActionListener mActionListener;
 
     private List<WifiP2pDevice> peers = new ArrayList<WifiP2pDevice>();
-    private List<WifiP2pDevice> connectedPeers = new ArrayList<WifiP2pDevice>();
 
     private static final int ACTIVITY_CREATE = 0;
     private static final int ACTIVITY_LOG = 1;
@@ -90,6 +89,9 @@ private GoalShareServer mGoalShareServer;
 
         }
 
+        mManager = ((moonwalk_drawer) getActivity()).getP2pManager();
+        mChannel = ((moonwalk_drawer) getActivity()).getP2pChannel();
+
         //mGoalShareServer = new GoalShareServer();
 
         mDbHelper = new DBAdapter(getActivity());
@@ -99,8 +101,7 @@ private GoalShareServer mGoalShareServer;
         //      android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);
 
 
-        mManager = (WifiP2pManager) getActivity().getSystemService(Context.WIFI_P2P_SERVICE);
-        mChannel = mManager.initialize(getActivity().getBaseContext(), getActivity().getMainLooper(), null);
+        //mChannel = mManager.initialize(getActivity().getBaseContext(), getActivity().getMainLooper(), null);
         //mReceiver = new OpponentReceiver(mManager, mChannel, this);
 
 
@@ -114,7 +115,7 @@ private GoalShareServer mGoalShareServer;
 
             @Override
             public void onSuccess() {
-                //Log.d("WiFi", "discovering");
+                //Log.d("WiFi", " = (WifiP2pManager) getActivity().getSystemService(Context.WIFI_P2P_SERVICE);discovering");
                 // Code for when the discovery initiation is successful goes here.
                 // No services have actually been discovered yet, so this method
                 // can often be left blank.  Code for peer discovery goes in the
@@ -177,6 +178,7 @@ private GoalShareServer mGoalShareServer;
     public void onResume() {
         super.onResume();
         mGoalShareServer = new GoalShareServer();
+        mGoalShareServer.execute(null);
         mReceiver = new OpponentReceiver(mManager, mChannel, this);
         getActivity().registerReceiver(mReceiver, mIntentFilter);
         mManager.discoverPeers(mChannel, mActionListener);
@@ -193,18 +195,20 @@ private GoalShareServer mGoalShareServer;
         mGoalShareServer = null;
     }
 
+    /*
     @Override
     public void onDestroy() {
         super.onDestroy();
         mManager.stopPeerDiscovery(mChannel, mActionListener);
-        disconnect();
+        //disconnect();
         mGoalShareServer = null;
     }
+*/
 
     @Override
     public void onPeersAvailable(WifiP2pDeviceList peerList) {
         peers.clear();
-        peers.addAll(peerList.getDeviceList());
+
 
         // If an AdapterView is backed by this data, notify it
         // of the change.  For instance, if you have a ListView of available
@@ -212,21 +216,25 @@ private GoalShareServer mGoalShareServer;
 //                ((WiFiPeerListAdapter) getListAdapter()).notifyDataSetChanged();
 
         List<String> namesList = new ArrayList<String>();
-        if (peers.size() == 0) {
+        if (peerList.getDeviceList().size() == 0) {
             Log.d("WiFi", "No devices found");
         } else {
             Log.d("WiFi", "Devices found");
-            for (WifiP2pDevice connectedPeer : connectedPeers) {
+            for (WifiP2pDevice connectedPeer : ((moonwalk_drawer) getActivity()).getConnectedPeers()) {
                 namesList.add(connectedPeer.deviceName + " (Connected)");
             }
-            for (WifiP2pDevice peer : peers) {
+
+            peers.addAll(((moonwalk_drawer) getActivity()).getConnectedPeers());
+
+            for (WifiP2pDevice peer : peerList.getDeviceList()) {
                 boolean connected = false;
-                for (WifiP2pDevice connectedPeer : connectedPeers) {
+                for (WifiP2pDevice connectedPeer : ((moonwalk_drawer) getActivity()).getConnectedPeers()) {
                     if (peer.equals(connectedPeer)) {
                         connected = true;
                     }
                 }
                 if (!connected) {
+                    peers.add(peer);
                     namesList.add(peer.deviceName);
                 }
             }
@@ -293,6 +301,7 @@ private GoalShareServer mGoalShareServer;
     }
 
     private void connect(final WifiP2pDevice device) {
+
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = device.deviceAddress;
 
@@ -302,9 +311,10 @@ private GoalShareServer mGoalShareServer;
 
             @Override
             public void onSuccess() {
-                connectedPeers.add(device);
+                ((moonwalk_drawer) getActivity()).addConnectedPeer(device);
+                //connectedPeers.add(device);
                 Toast.makeText(getActivity(), "Connect success", Toast.LENGTH_SHORT).show();
-                sendData(device.deviceAddress, "Test String");
+                sendData(device.deviceName, "Test String");
             }
 
             @Override
@@ -314,69 +324,63 @@ private GoalShareServer mGoalShareServer;
         });
     }
 
-    private void disconnect() {
-        mManager.cancelConnect(mChannel, new WifiP2pManager.ActionListener() {
 
+    private void sendData(final String host, final String text) {
+        Log.d("Socket", "Sending data");
+        final int port = 8888;
+        final Socket socket = new Socket();
+
+        Thread thread = new Thread(new Runnable() {
             @Override
-            public void onSuccess() {
-                connectedPeers = new ArrayList<WifiP2pDevice>();
-                if(getActivity() != null) {
-                    Toast.makeText(getActivity(), "Disconnect success", Toast.LENGTH_SHORT).show();
+            public void run() {
+                try {
+
+                    /**
+                     * Create a client socket with the host,
+                     * port, and timeout information.
+                     */
+                    socket.bind(null);
+                    Log.d("Socket", "Host: " + host);
+                    Log.d("Socket", "Port: " + port);
+                    InetSocketAddress inetSocketAddress = (new InetSocketAddress(host, port));
+                    socket.connect(inetSocketAddress, 5000);
+
+                    Log.d("Socket", "Connection");
+
+
+                    /**
+                     * Create a byte stream from a JPEG file and pipe it to the output stream
+                     * of the socket. This data will be retrieved by the server device.
+                     */
+                    OutputStream outputStream = socket.getOutputStream();
+
+                    outputStream.write(text.getBytes());
+
+                    outputStream.close();
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }
-
-            @Override
-            public void onFailure(int reason) {
-                if(getActivity() != null) {
-                    Toast.makeText(getActivity(), "Disconnect failed. Retry.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-    private void sendData(String host, String text) {
-
-        int port = 8888;
-        Socket socket = new Socket();
-
-        try {
-            /**
-             * Create a client socket with the host,
-             * port, and timeout information.
-             */
-            socket.bind(null);
-            socket.connect((new InetSocketAddress(host, port)), 500);
-
-            /**
-             * Create a byte stream from a JPEG file and pipe it to the output stream
-             * of the socket. This data will be retrieved by the server device.
-             */
-            OutputStream outputStream = socket.getOutputStream();
-
-            outputStream.write(text.getBytes());
-
-            outputStream.close();
-
-        } catch (Exception e)
-
-        {
-            e.printStackTrace();
-        }
-
-
-/**
- * Clean up any open sockets when done
- * transferring or if an exception occurred.
- */ finally {
-            if (socket != null) {
-                if (socket.isConnected()) {
-                    try {
-                        socket.close();
-                    } catch (IOException e) {
-                        //catch logic
+                /**
+                 * Clean up any open sockets when done
+                 * transferring or if an exception occurred.
+                 */ finally {
+                    if (socket != null) {
+                        if (socket.isConnected()) {
+                            try {
+                                socket.close();
+                            } catch (IOException e) {
+                                //catch logic
+                            }
+                        }
                     }
                 }
             }
-        }
+        });
+
+        thread.start();
+
+
     }
 }
