@@ -4,8 +4,11 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
@@ -20,7 +23,9 @@ import com.facebook.UiLifecycleHelper;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -38,6 +43,11 @@ public class moonwalk_drawer extends Activity
     private static final int TREAT_CREATE = 3;
 
     private DBAdapter mDbHelper;
+
+    private WifiP2pManager mManager;
+    private WifiP2pManager.Channel mChannel;
+    private List<WifiP2pDevice> connectedPeers = new ArrayList<WifiP2pDevice>();
+
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -61,6 +71,9 @@ public class moonwalk_drawer extends Activity
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         //mTitle = getString(R.string.title_section1);
+
+        mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+        mChannel = mManager.initialize(getBaseContext(), getMainLooper(), null);
 
         mDbHelper = new DBAdapter(this);
         mDbHelper.open();
@@ -291,6 +304,7 @@ public class moonwalk_drawer extends Activity
     public void onDestroy() {
         super.onDestroy();
         uiHelper.onDestroy();
+        disconnect();
     }
 
 
@@ -300,5 +314,35 @@ public class moonwalk_drawer extends Activity
         uiHelper.onSaveInstanceState(savedState);
     }
 
+    public void disconnect() {
+        mManager.cancelConnect(mChannel, new WifiP2pManager.ActionListener() {
 
+            @Override
+            public void onSuccess() {
+                connectedPeers = new ArrayList<WifiP2pDevice>();
+                Log.d("WiFi", "Disconnect success");
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                Log.d("WiFi", "Disconnect failure");
+            }
+        });
+    }
+
+    public List<WifiP2pDevice> getConnectedPeers() {
+        return connectedPeers;
+    }
+
+    public void addConnectedPeer(WifiP2pDevice device) {
+        connectedPeers.add(device);
+    }
+
+    public WifiP2pManager getP2pManager() {
+        return mManager;
+    }
+
+    public WifiP2pManager.Channel getP2pChannel() {
+        return mChannel;
+    }
 }
