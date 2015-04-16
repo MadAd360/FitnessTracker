@@ -2,9 +2,11 @@ package com.uni.ard.fitnesstracker;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
@@ -29,6 +31,11 @@ import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.uni.ard.fitnesstracker.dummy.DummyContent;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +50,7 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
     private AbsListView mListView;
 
     private ListAdapter mAdapter;
+private GoalShareServer mGoalShareServer;
 
     WifiP2pManager mManager;
     WifiP2pManager.Channel mChannel;
@@ -82,6 +90,7 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
 
         }
 
+        mGoalShareServer = new GoalShareServer();
 
         mDbHelper = new DBAdapter(getActivity());
         mDbHelper.open();
@@ -93,7 +102,6 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
         mManager = (WifiP2pManager) getActivity().getSystemService(Context.WIFI_P2P_SERVICE);
         mChannel = mManager.initialize(getActivity().getBaseContext(), getActivity().getMainLooper(), null);
         mReceiver = new OpponentReceiver(mManager, mChannel, this);
-
 
 
         mIntentFilter = new IntentFilter();
@@ -168,6 +176,7 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
     @Override
     public void onResume() {
         super.onResume();
+        mGoalShareServer = new GoalShareServer();
         mReceiver = new OpponentReceiver(mManager, mChannel, this);
         getActivity().registerReceiver(mReceiver, mIntentFilter);
         mManager.discoverPeers(mChannel, mActionListener);
@@ -179,6 +188,8 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
         super.onPause();
         mManager.stopPeerDiscovery(mChannel, mActionListener);
         getActivity().unregisterReceiver(mReceiver);
+        disconnect();
+        mGoalShareServer = null;
     }
 
 
@@ -204,11 +215,11 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
             for (WifiP2pDevice peer : peers) {
                 boolean connected = false;
                 for (WifiP2pDevice connectedPeer : connectedPeers) {
-                    if(peer.equals(connectedPeer)) {
+                    if (peer.equals(connectedPeer)) {
                         connected = true;
                     }
                 }
-                if(!connected) {
+                if (!connected) {
                     namesList.add(peer.deviceName);
                 }
             }
@@ -286,6 +297,7 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
             public void onSuccess() {
                 connectedPeers.add(device);
                 Toast.makeText(getActivity(), "Connect success", Toast.LENGTH_SHORT).show();
+                sendData(device.deviceAddress, "Test String");
             }
 
             @Override
@@ -309,5 +321,51 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
                 Toast.makeText(getActivity(), "Disconnect failed. Retry.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void sendData(String host, String text) {
+
+        int port = 8888;
+        Socket socket = new Socket();
+
+        try {
+            /**
+             * Create a client socket with the host,
+             * port, and timeout information.
+             */
+            socket.bind(null);
+            socket.connect((new InetSocketAddress(host, port)), 500);
+
+            /**
+             * Create a byte stream from a JPEG file and pipe it to the output stream
+             * of the socket. This data will be retrieved by the server device.
+             */
+            OutputStream outputStream = socket.getOutputStream();
+
+            outputStream.write(text.getBytes());
+
+            outputStream.close();
+
+        } catch (Exception e)
+
+        {
+            e.printStackTrace();
+        }
+
+
+/**
+ * Clean up any open sockets when done
+ * transferring or if an exception occurred.
+ */ finally {
+            if (socket != null) {
+                if (socket.isConnected()) {
+                    try {
+                        socket.close();
+                    } catch (IOException e) {
+                        //catch logic
+                    }
+                }
+            }
+        }
     }
 }
