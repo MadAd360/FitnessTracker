@@ -63,7 +63,7 @@ public class StepsTrackerActivity extends Activity implements SensorEventListene
         mDbHelper.open();
 
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
 
         spinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -220,7 +220,7 @@ private int numSteps = 0;
         //update any views you might have that are displaying the sensor information
         //You'd get accelerometer values like this:
 
-        if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER) {
+        if (event.sensor.getType() != Sensor.TYPE_GRAVITY) {
             return;
         }
 
