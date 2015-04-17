@@ -225,9 +225,9 @@ private int numSteps = 0;
             return;
         }
 
-        float mSensorX = Math.abs(event.values[0])/9.8f;
-        float mSensorY = Math.abs(event.values[1])/9.8f;
-        float mSensorZ = Math.abs(event.values[2])/9.8f;
+        float mSensorX = Math.abs(event.values[1]);
+        float mSensorY = Math.abs(event.values[2]);
+        float mSensorZ = Math.abs(event.values[0]);
 
         //double dot = Math.abs(Math.sqrt(oldX * mSensorX + oldY * mSensorY + oldZ * mSensorZ));
         double a = (Math.sqrt(oldX * oldX + oldY * oldY + oldZ * oldZ));
