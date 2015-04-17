@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -94,7 +95,20 @@ public class TreatsFragment extends Fragment implements AdapterView.OnItemClickL
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        //eat the treat?
+        Cursor cursor = mDbHelper.fetchTreat(id);
+        Integer caloriesNumber = cursor.getInt(cursor.getColumnIndexOrThrow(DBAdapter.KEY_TREAT_CALORIES));
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(getActivity());
+        int freeCalories = sp.getInt("pref_calorie_free", 0);
+        if(caloriesNumber >= freeCalories) {
+            sp.edit().putInt("pref_calorie_free", freeCalories - caloriesNumber).apply();
+            String treatName = cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.KEY_TREAT_NAME));
+            Toast toast = Toast.makeText(getActivity(), treatName + " eaten", Toast.LENGTH_LONG);
+            toast.show();
+        }else{
+            Toast toast = Toast.makeText(getActivity(), "Not enough calories to eat treat", Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 
     public void addTreat(){

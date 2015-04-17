@@ -260,6 +260,45 @@
 
             </LinearLayout>
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/setChallenge"
+                android:text="Set Challenge"
+                android:onClick="setChallenge"
+                android:layout_weight="1"
+                android:background="@drawable/curved_rectangle"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="12dp"
+                android:textColor="#ff333333"
+                android:clickable="true" />
+
+
+            <LinearLayout
+                android:id="@+id/challengeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="@android:dimen/notification_large_icon_height"
+                        android:id="@+id/opponentName"
+                        android:hint="Opponent Name"
+                        android:textColorHint="#88999999"
+                        android:textColor="@color/light_space_gray" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="@android:dimen/notification_large_icon_height"
+                    android:inputType="number"
+                    android:id="@+id/caloriePenalty"
+                    android:hint="Calorie Penalty"
+                    android:textColorHint="#88999999"
+                    android:textColor="@color/light_space_gray" />
+
+            </LinearLayout>
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"

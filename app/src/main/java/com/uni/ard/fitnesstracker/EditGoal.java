@@ -50,8 +50,13 @@ public class EditGoal extends Activity {
     private Switch mTypeSwitch;
     private Switch mTypeBothSwitch;
     private View mCustomLayout;
-    private Button customButton;
+    //private Button customButton;
     private Button mapButton;
+    private View mChallengeLayout;
+    private Button challengeButton;
+
+    private EditText mOpponentText;
+    private EditText mPenaltyText;
 
     ArrayAdapter<CharSequence> walkAdapter;
     ArrayAdapter<CharSequence> climbAdapter;
@@ -79,6 +84,8 @@ public class EditGoal extends Activity {
     boolean calorieType;
     Long calorieId;
     int caloriesCount;
+
+    boolean challenge = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,8 +131,13 @@ public class EditGoal extends Activity {
         mTypeSwitch = (Switch) findViewById(R.id.typeSwitch);
         mTypeBothSwitch = (Switch) findViewById(R.id.bothSwitch);
         mCustomLayout = findViewById(R.id.customLayout);
-        customButton = (Button) findViewById(R.id.selectCustom);
+        //customButton = (Button) findViewById(R.id.selectCustom);
         mapButton = (Button) findViewById(R.id.selectMap);
+
+        challengeButton = (Button) findViewById(R.id.setChallenge);
+        mChallengeLayout = findViewById(R.id.challengeLayout);
+        mOpponentText = (EditText) findViewById(R.id.opponentName);
+        mPenaltyText = (EditText) findViewById(R.id.caloriePenalty);
 
         Button confirmButton = (Button) findViewById(R.id.confirm);
 
@@ -134,6 +146,8 @@ public class EditGoal extends Activity {
         mRowId = null;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+
+            challengeButton.setVisibility(View.GONE);
 
             mRowId = extras.getLong(DBAdapter.KEY_ROWID);
 
@@ -260,11 +274,12 @@ public class EditGoal extends Activity {
         boolean mapDisable = sp.getBoolean(getResources().getString(R.string.pref_map_disable), false);
 
         if (mapDisable) {
-            customButton.setVisibility(View.GONE);
+            //customButton.setVisibility(View.GONE);
             mapButton.setVisibility(View.GONE);
-        } else {
-            mCustomLayout.setVisibility(View.GONE);
         }
+
+            mCustomLayout.setVisibility(View.GONE);
+        mChallengeLayout.setVisibility(View.GONE);
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
 
@@ -277,6 +292,9 @@ public class EditGoal extends Activity {
                 String climbUnitText = climbSpinner.getSelectedItem().toString();
                 Boolean typeClimb = mTypeSwitch.isChecked();
                 Boolean typeBoth = mTypeBothSwitch.isChecked();
+
+                String challengeOpponentText = mOpponentText.getText().toString();
+                String challengePenaltyText = mPenaltyText.getText().toString();
 
                 if (mapType) {
                     if (mapId == null) {
@@ -294,6 +312,18 @@ public class EditGoal extends Activity {
                     typeClimb = false;
                     walkText = caloriesCount + "";
                     walkUnitText = "Calories";
+                }
+
+                if(challenge){
+                    if(challengeOpponentText.isEmpty()) {
+                        Toast toast = Toast.makeText(EditGoal.this, "Opponent must not be blank", Toast.LENGTH_LONG);
+                        toast.show();
+                        return;
+                    }else if(challengePenaltyText.isEmpty()){
+                        Toast toast = Toast.makeText(EditGoal.this, "Penalty must not be blank", Toast.LENGTH_LONG);
+                        toast.show();
+                        return;
+                    }
                 }
 
 
@@ -343,6 +373,10 @@ public class EditGoal extends Activity {
                         }
                         if (mRowId != null) {
                             bundle.putLong(DBAdapter.KEY_ROWID, mRowId);
+                        }
+                        if(challenge){
+                            bundle.putString(DBAdapter.KEY_CHALLENGE_OPPONENT, challengeOpponentText);
+                            bundle.putInt(DBAdapter.KEY_CHALLENGE_PENALTY, new Integer(challengePenaltyText));
                         }
 
                         Intent mIntent = new Intent();
@@ -536,6 +570,19 @@ public class EditGoal extends Activity {
         calorieType = false;
         calorieId = null;
         mCustomLayout.setVisibility(View.VISIBLE);
+    }
+
+
+    public void setChallenge(View v) {
+        if(mChallengeLayout.getVisibility() == View.GONE){
+            challenge = true;
+            mChallengeLayout.setVisibility(View.VISIBLE);
+            challengeButton.setText("Remove Challenge");
+        }else{
+            challenge = false;
+            mChallengeLayout.setVisibility(View.GONE);
+            challengeButton.setText("Set Challenge");
+        }
     }
 
     public void selectCalorie(View v) {

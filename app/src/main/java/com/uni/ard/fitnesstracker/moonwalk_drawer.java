@@ -147,9 +147,9 @@ public class moonwalk_drawer extends Activity
                         .commit();
                 match = true;
             } else if ((socialDisable && position == 3) || position == 4) {
-                mTitle = "Opponents";
+                mTitle = "Challenges";
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, OpponentFragment.newInstance())
+                        .replace(R.id.container, ChallengesFragment.newInstance())
                         .commit();
                 match = true;
             }else {
@@ -267,6 +267,14 @@ public class moonwalk_drawer extends Activity
                     if (calorieId != null) {
                         mDbHelper.connectTreat(goalId, calorieId);
                     }
+
+                    String opponentName = extras.getString(DBAdapter.KEY_CHALLENGE_OPPONENT);
+                    int penalty = extras.getInt(DBAdapter.KEY_CHALLENGE_PENALTY);
+
+                    if(opponentName != null){
+                        mDbHelper.addGoalChallenge(goalId, opponentName, penalty);
+                    }
+
                     Toast toast = Toast.makeText(this, "Goal created", Toast.LENGTH_LONG);
                     toast.show();
                     break;

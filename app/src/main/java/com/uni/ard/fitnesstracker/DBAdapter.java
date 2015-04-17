@@ -43,6 +43,7 @@ public class DBAdapter {
     public static final String KEY_GOAL_TWITTER_ID = "twitterid";
     public static final String KEY_GOAL_MAP = "map";
     public static final String KEY_GOAL_CALORIE = "calorie";
+    public static final String KEY_GOAL_CHALLENGE = "challenge";
 
     public static final String KEY_ACTIVITY_NUMBER = "number";
     public static final String KEY_ACTIVITY_DATE = "date";
@@ -64,6 +65,10 @@ public class DBAdapter {
     public static final String KEY_TREAT_CALORIES = "calories";
     public static final String KEY_TREAT_IMAGE = "image";
 
+    public static final String KEY_CHALLENGE_OPPONENT = "opponent";
+    public static final String KEY_CHALLENGE_PENALTY = "penalty";
+    public static final String KEY_CHALLENGE_LOST = "lost";
+
 
     private static final String TAG = "DBAdapter";
     private DatabaseHelper mDbHelper;
@@ -76,6 +81,7 @@ public class DBAdapter {
     private static final String ACTIVITY_TABLE = "activities";
     private static final String TREAT_TABLE = "treats";
     private static final String HISTORY_TABLE = "history";
+    private static final String CHALLENGE_TABLE = "challenges";
     private static final int DATABASE_VERSION = 2;
 
     /**
@@ -87,8 +93,9 @@ public class DBAdapter {
                     "walkunit text not null, climbunit text not null, " +
                     "start integer not null, end integer not null, complete boolean not null, climb boolean not null, " +
                     "dualType boolean not null, active boolean not null, previousstate int not null, " +
-                    "facebookid text, twitterid int, map integer, calorie integer, " +
-                    "FOREIGN KEY(map) REFERENCES maps(_id),  FOREIGN KEY(calorie) REFERENCES treats(_id));";
+                    "facebookid text, twitterid int, map integer, calorie integer, challenge integer, " +
+                    "FOREIGN KEY(map) REFERENCES maps(_id),  FOREIGN KEY(calorie) REFERENCES treats(_id)," +
+                    "FOREIGN KEY(challenge) REFERENCES challenges(_id));";
 
     private static final String ACTIVITY_CREATE =
             "create table " + ACTIVITY_TABLE + " (_id integer primary key autoincrement, "
@@ -112,6 +119,10 @@ public class DBAdapter {
                     + "name text not null, calories integer not null, " +
                     "image blob not null);";
 
+    private static final String CHALLENGE_CREATE =
+            "create table " + CHALLENGE_TABLE + " (_id integer primary key autoincrement, "
+                    + "opponent text, penalty integer, lost boolean);";
+
     private final Context mCtx;
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -130,6 +141,7 @@ public class DBAdapter {
             db.execSQL(HISTORY_CREATE);
             db.execSQL(MAP_CREATE);
             db.execSQL(TREAT_CREATE);
+            db.execSQL(CHALLENGE_CREATE);
         }
 
         @Override
@@ -164,7 +176,6 @@ public class DBAdapter {
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getWritableDatabase();
         if(!fetchTreats().isFirst()){
-            Log.d("woops", "ohoh");
             Bitmap bm = BitmapFactory.decodeResource(mCtx.getResources(), R.drawable.ice_cream);
             insertTreat("Ice Cream", bm, 100);
         }
@@ -741,5 +752,44 @@ public class DBAdapter {
         ContentValues args = new ContentValues();
         args.putNull(KEY_GOAL_CALORIE);
         mDb.update(GOAL_TABLE, args, KEY_ROWID + "=" + goalId, null);
+    }
+
+
+    public void addGoalChallenge(long goalId, String opponent, int penalty) {
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_CHALLENGE_OPPONENT, opponent);
+        initialValues.put(KEY_CHALLENGE_PENALTY, penalty);
+        initialValues.put(KEY_CHALLENGE_LOST, false);
+
+
+        Long challengeId = mDb.insert(CHALLENGE_TABLE, null, initialValues);
+
+        ContentValues args = new ContentValues();
+        args.put(KEY_GOAL_CHALLENGE, challengeId);
+        mDb.update(GOAL_TABLE, args, KEY_ROWID + "=" + goalId, null);
+    }
+
+    public Cursor fetchChallengeGoals() {
+
+        String where = DBAdapter.KEY_GOAL_CHALLENGE + " NOT NULL" ;
+
+        String order = KEY_GOAL_COMPLETE + " ASC, " + KEY_GOAL_ACTIVE + " DESC, " + KEY_GOAL_START + " ASC, " +
+                KEY_GOAL_END + " ASC ";
+
+        return mDb.query(GOAL_TABLE, new String[]{KEY_ROWID, KEY_GOAL_TITLE, KEY_GOAL_WALK, KEY_GOAL_CLIMB,
+                KEY_GOAL_WALK_UNIT, KEY_GOAL_CLIMB_UNIT, KEY_GOAL_START, KEY_GOAL_END, KEY_GOAL_COMPLETE,
+                KEY_TYPE, KEY_GOAL_ACTIVE, KEY_GOAL_CALORIE, KEY_GOAL_CHALLENGE}, where, null, null, null, order);
+    }
+
+    public Cursor fetchChallenge(Long rowId) {
+
+        Cursor mCursor =
+
+                mDb.query(true, CHALLENGE_TABLE, new String[]{KEY_ROWID, KEY_CHALLENGE_OPPONENT, KEY_CHALLENGE_PENALTY, KEY_CHALLENGE_LOST}, KEY_ROWID + "=" + rowId, null,
+                        null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
     }
 }

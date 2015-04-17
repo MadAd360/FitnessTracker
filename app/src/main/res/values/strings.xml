@@ -57,6 +57,7 @@
     <string name="title_activity_create_treat">CreateTreat</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_challenge_view">Challenge</string>
 
 
 </resources>

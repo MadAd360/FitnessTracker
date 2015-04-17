@@ -113,7 +113,7 @@ public class NavigationDrawerFragment extends Fragment {
                                 getString(R.string.title_section2),
                                 getString(R.string.title_section3),
                                 "Treats",
-                                "Opponents",
+                                "Challenges",
                                 getString(R.string.title_activity_settings),
                         }));
             } else {
@@ -128,7 +128,7 @@ public class NavigationDrawerFragment extends Fragment {
                                 getString(R.string.title_section3),
                                 "Social Media",
                                 "Treats",
-                                "Opponents",
+                                "Challenges",
                                 getString(R.string.title_activity_settings),
                         }));
             }
@@ -143,7 +143,7 @@ public class NavigationDrawerFragment extends Fragment {
                                 getString(R.string.title_section2),
                                 getString(R.string.title_section3),
                                 "Treats",
-                                "Opponents",
+                                "Challenges",
                                 getString(R.string.title_activity_settings),
                         }));
             } else {
@@ -157,7 +157,7 @@ public class NavigationDrawerFragment extends Fragment {
                                 getString(R.string.title_section3),
                                 "Social Media",
                                 "Treats",
-                                "Opponents",
+                                "Challenges",
                                 getString(R.string.title_activity_settings),
                         }));
             }

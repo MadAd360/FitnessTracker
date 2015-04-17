@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    tools:context="com.uni.ard.fitnesstracker.ChallengeView">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/scrollView"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/curved_rectangle"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@android:dimen/notification_large_icon_height"
+        android:id="@+id/opponent"
+        android:text="Opponent:"
+        android:textColor="@color/dark_space_gray"
+        android:singleLine="true"
+        android:textIsSelectable="false"
+        android:textSize="20sp"
+        android:gravity="center_vertical"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@android:dimen/notification_large_icon_height"
+            android:id="@+id/penalty"
+            android:text="Penalty:"
+            android:textColor="@color/dark_space_gray"
+            android:singleLine="true"
+            android:textIsSelectable="false"
+            android:textSize="20sp"
+            android:gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@android:dimen/notification_large_icon_height"
+            android:id="@+id/outcome"
+            android:text="Outcome:"
+            android:textColor="@color/dark_space_gray"
+            android:singleLine="true"
+            android:textIsSelectable="false"
+            android:textSize="20sp"
+            android:gravity="center_vertical"/>
+
+    </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="@android:dimen/notification_large_icon_height"
+            android:text="Select Outcome"
+            android:id="@+id/outcomeSelect"
+            android:onClick="selectOutcome"
+            android:background="@drawable/curved_rectangle"
+            android:textColor="#ff333333"
+            android:clickable="true"
+            android:layout_marginTop="8dp"
+            android:layout_below="@id/linearLayout" />
+
+
+</RelativeLayout>

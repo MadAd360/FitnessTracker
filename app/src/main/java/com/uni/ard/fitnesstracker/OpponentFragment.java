@@ -177,8 +177,8 @@ public class OpponentFragment extends Fragment implements AbsListView.OnItemClic
     @Override
     public void onResume() {
         super.onResume();
-        mGoalShareServer = new GoalShareServer();
-        mGoalShareServer.execute(null);
+//        mGoalShareServer = new GoalShareServer();
+//        mGoalShareServer.execute(null);
         mReceiver = new OpponentReceiver(mManager, mChannel, this);
         getActivity().registerReceiver(mReceiver, mIntentFilter);
         mManager.discoverPeers(mChannel, mActionListener);

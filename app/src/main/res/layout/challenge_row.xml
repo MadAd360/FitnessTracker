@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="90dp"
+    android:padding="6dp"
+    android:background="@drawable/curved_rectangle"
+    android:longClickable="false">
+
+    <ImageView
+        android:id="@+id/action_icon"
+        android:layout_width="70dp"
+        android:layout_height="fill_parent"
+        android:contentDescription="TODO"
+        android:src="@drawable/moonprint_small"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginRight="4dp"/>
+
+
+    <!--TextView
+        android:id="@+id/total"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/text1"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_toRightOf="@id/icon"
+        android:text="Example application"
+        android:textSize="16sp" /-->
+
+    <LinearLayout
+        android:id="@+id/challengeComponents"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="26dip"
+        android:layout_toRightOf="@id/action_icon"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:id="@+id/opponent"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:ellipsize="none"
+            android:singleLine="true"
+            android:text="Opponent"
+            android:textSize="18sp"
+            android:gravity="center_vertical"
+            android:textColor="@color/dark_space_gray"/>
+
+        <TextView
+            android:id="@+id/challengeStatus"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:singleLine="true"
+            android:layout_marginRight="4dp"
+            android:text="State"
+            android:textSize="18sp"
+            android:gravity="center_vertical|right"
+            android:focusable="false"
+            android:textColor="@color/dark_space_gray"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/textComponents"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="26dip"
+        android:layout_toRightOf="@id/action_icon"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:ellipsize="none"
+            android:singleLine="true"
+            android:text="Description"
+            android:textSize="16sp"
+            android:gravity="center_vertical"
+            android:textColor="@color/dark_space_gray"/>
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:singleLine="true"
+            android:text="Date"
+            android:layout_marginRight="4dp"
+            android:textSize="14sp"
+            android:gravity="center_vertical|right"
+            android:focusable="false"
+            android:textColor="@color/dark_space_gray"/>
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/challengeComponents"
+        android:layout_above="@+id/textComponents"
+        android:layout_toRightOf="@id/action_icon">
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:id="@+id/progressBar"
+        android:gravity="center_vertical"
+        android:progress="500"
+        android:max="1000"
+        android:progressDrawable="@drawable/old_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/total"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:singleLine="true"
+            android:text="100/200"
+            android:textSize="14sp"
+            android:gravity="center|right"
+            android:focusable="false"
+            android:textColor="#FF666666"
+            android:layout_marginRight="4dp" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
