@@ -266,6 +266,7 @@ public class moonwalk_drawer extends Activity
 
                     Long calorieId = extras.getLong(DBAdapter.KEY_GOAL_CALORIE);
                     if (calorieId != null) {
+                        Log.d("CalorieAdd", calorieId + "");
                         mDbHelper.connectTreat(goalId, calorieId);
                     }
 
