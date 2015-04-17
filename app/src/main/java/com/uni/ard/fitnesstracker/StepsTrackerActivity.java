@@ -63,7 +63,7 @@ public class StepsTrackerActivity extends Activity implements SensorEventListene
         mDbHelper.open();
 
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
 
         spinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -127,7 +127,8 @@ public class StepsTrackerActivity extends Activity implements SensorEventListene
             public void onClick(View view) {
 
                 Boolean typeClimb = mTypeSwitch.isChecked();
-                String distanceText = mBodyText.getText().toString();
+//                String distanceText = mBodyText.getText().toString();
+                String distanceText = "" + numSteps;
                 String unitText = spinner.getSelectedItem().toString();
 
                 if (!distanceText.isEmpty() && !unitText.isEmpty()) {
@@ -220,13 +221,13 @@ private int numSteps = 0;
         //update any views you might have that are displaying the sensor information
         //You'd get accelerometer values like this:
 
-        if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER) {
+        if (event.sensor.getType() != Sensor.TYPE_GRAVITY) {
             return;
         }
 
-        float mSensorX = Math.abs(event.values[0]);
-        float mSensorY = Math.abs(event.values[1]);
-        float mSensorZ = Math.abs(event.values[2]);
+        float mSensorX = Math.abs(event.values[0])/9.8f;
+        float mSensorY = Math.abs(event.values[1])/9.8f;
+        float mSensorZ = Math.abs(event.values[2])/9.8f;
 
         //double dot = Math.abs(Math.sqrt(oldX * mSensorX + oldY * mSensorY + oldZ * mSensorZ));
         double a = (Math.sqrt(oldX * oldX + oldY * oldY + oldZ * oldZ));
