@@ -15,6 +15,7 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -49,6 +50,8 @@ public class GoalDetails extends FragmentActivity {
     private DBAdapter mDbHelper;
     boolean goalBoth;
     boolean goalType;
+
+    Long challengeId;
 
     private static final int ACTIVITY_EDIT = 0;
     private static final int ACTIVITY_LOG = 1;
@@ -92,6 +95,9 @@ public class GoalDetails extends FragmentActivity {
                 completed = true;
             }
             statusNumber = GlobalVariables.getStatus(active, closed, startNumber, endNumber, completed);
+
+            challengeId = cursor.getLong(
+                    cursor.getColumnIndexOrThrow(DBAdapter.KEY_GOAL_CHALLENGE));
 
             goalBoth = cursor.getInt(cursor.getColumnIndexOrThrow(DBAdapter.KEY_GOAL_DUAL)) > 0;
             goalType = cursor.getInt(cursor.getColumnIndexOrThrow(DBAdapter.KEY_TYPE)) > 0;
@@ -358,6 +364,15 @@ public class GoalDetails extends FragmentActivity {
                 return GoalView.newInstance(rowId);
             }
 
+            if(challengeId != 0){
+                Log.d("Details", challengeId + "");
+                if (position == 1) {
+                    return ChallengeView.newInstance(rowId);
+                } else {
+                    position = position - 1;
+                }
+            }
+
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             Boolean statsDisable = sp.getBoolean(getResources().getString(R.string.pref_statistics_disable), false);
             boolean socialDisable = sp.getBoolean(getResources().getString(R.string.pref_social_disable), false);
@@ -416,6 +431,10 @@ public class GoalDetails extends FragmentActivity {
                 }
             }
 
+            if(challengeId != 0){
+                count = count + 1;
+            }
+
             if (statusNumber == GlobalVariables.GOAL_MODE_COMPLETED && !socialDisable) {
                 count = count + 1;
             }
@@ -427,6 +446,14 @@ public class GoalDetails extends FragmentActivity {
             if (position == 0) {
                 return "Details";
 
+            }
+
+            if(challengeId != 0){
+                if (position == 1) {
+                    return "Challenge";
+                } else {
+                    position = position - 1;
+                }
             }
 
 

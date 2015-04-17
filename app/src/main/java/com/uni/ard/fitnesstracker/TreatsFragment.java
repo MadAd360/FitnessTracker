@@ -100,21 +100,24 @@ public class TreatsFragment extends Fragment implements AdapterView.OnItemClickL
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(getActivity());
         int freeCalories = sp.getInt("pref_calorie_free", 0);
-        if(caloriesNumber >= freeCalories) {
-            sp.edit().putInt("pref_calorie_free", freeCalories - caloriesNumber).apply();
+        if(caloriesNumber <= freeCalories) {
+            int newCalories = freeCalories - caloriesNumber;
+            sp.edit().putInt("pref_calorie_free", newCalories).apply();
             String treatName = cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.KEY_TREAT_NAME));
             Toast toast = Toast.makeText(getActivity(), treatName + " eaten", Toast.LENGTH_LONG);
             toast.show();
+
+            freeCalorieText.setText("Burned " + newCalories + " calories");
         }else{
             Toast toast = Toast.makeText(getActivity(), "Not enough calories to eat treat", Toast.LENGTH_LONG);
             toast.show();
         }
     }
 
-    public void addTreat(){
-        Intent i = new Intent(getActivity(), CreateTreat.class);
-        startActivityForResult(i, TREAT_CREATE);
-    }
+//    public void addTreat(){
+//        Intent i = new Intent(getActivity(), CreateTreat.class);
+//        startActivityForResult(i, TREAT_CREATE);
+//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {

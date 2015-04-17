@@ -74,6 +74,8 @@ public class ChallengeCursorAdapter extends CursorAdapter {
                 challengeCursor.getColumnIndexOrThrow(DBAdapter.KEY_CHALLENGE_PENALTY));
         boolean lost = challengeCursor.getInt(
                 challengeCursor.getColumnIndexOrThrow(DBAdapter.KEY_CHALLENGE_LOST))>0;
+        boolean won = challengeCursor.getInt(
+                challengeCursor.getColumnIndexOrThrow(DBAdapter.KEY_CHALLENGE_WON))>0;
 
 
         opponentView.setText(opponentName);
@@ -213,14 +215,12 @@ public class ChallengeCursorAdapter extends CursorAdapter {
                 break;
         }
 
-        if(statusNumber == GlobalVariables.GOAL_MODE_COMPLETED){
             if(lost){
                 statusView.setText("Lost");
                 statusView.setTextColor(0xFF880000);
-            }else{
+            }else if(won){
                 statusView.setText("Won");
                 statusView.setTextColor(0xFF008800);
-            }
         }else{
             statusView.setText("Ongoing");
             statusView.setTextColor(0xFFB77600);

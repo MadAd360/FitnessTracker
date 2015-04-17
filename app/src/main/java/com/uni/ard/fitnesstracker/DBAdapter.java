@@ -68,6 +68,7 @@ public class DBAdapter {
     public static final String KEY_CHALLENGE_OPPONENT = "opponent";
     public static final String KEY_CHALLENGE_PENALTY = "penalty";
     public static final String KEY_CHALLENGE_LOST = "lost";
+    public static final String KEY_CHALLENGE_WON = "won";
 
 
     private static final String TAG = "DBAdapter";
@@ -121,7 +122,7 @@ public class DBAdapter {
 
     private static final String CHALLENGE_CREATE =
             "create table " + CHALLENGE_TABLE + " (_id integer primary key autoincrement, "
-                    + "opponent text, penalty integer, lost boolean);";
+                    + "opponent text, penalty integer, lost boolean, won boolean);";
 
     private final Context mCtx;
 
@@ -323,7 +324,8 @@ public class DBAdapter {
                 KEY_GOAL_END + " ASC ";
 
         return mDb.query(GOAL_TABLE, new String[]{KEY_ROWID, KEY_GOAL_TITLE, KEY_GOAL_WALK, KEY_GOAL_CLIMB, KEY_GOAL_DUAL,
-                KEY_GOAL_WALK_UNIT, KEY_GOAL_CLIMB_UNIT, KEY_GOAL_START, KEY_GOAL_END, KEY_GOAL_COMPLETE, KEY_TYPE, KEY_GOAL_ACTIVE, KEY_GOAL_CALORIE}, null, null, null, null, order);
+                KEY_GOAL_WALK_UNIT, KEY_GOAL_CLIMB_UNIT, KEY_GOAL_START, KEY_GOAL_END, KEY_GOAL_COMPLETE, KEY_TYPE,
+                KEY_GOAL_ACTIVE, KEY_GOAL_CALORIE, KEY_GOAL_CHALLENGE}, null, null, null, null, order);
     }
 
 
@@ -357,7 +359,8 @@ public class DBAdapter {
         String order = KEY_GOAL_END + " ASC ";
 
         return mDb.query(GOAL_TABLE, new String[]{KEY_ROWID, KEY_GOAL_TITLE, KEY_GOAL_WALK, KEY_GOAL_CLIMB, KEY_GOAL_DUAL,
-                KEY_GOAL_WALK_UNIT, KEY_GOAL_CLIMB_UNIT, KEY_GOAL_START, KEY_GOAL_END, KEY_GOAL_COMPLETE, KEY_TYPE, KEY_GOAL_ACTIVE, KEY_GOAL_CALORIE}, where, null, null, null, order);
+                KEY_GOAL_WALK_UNIT, KEY_GOAL_CLIMB_UNIT, KEY_GOAL_START, KEY_GOAL_END, KEY_GOAL_COMPLETE,
+                KEY_TYPE, KEY_GOAL_ACTIVE, KEY_GOAL_CALORIE, KEY_GOAL_CHALLENGE}, where, null, null, null, order);
     }
 
     public Cursor fetchAllActivities() {
@@ -395,7 +398,7 @@ public class DBAdapter {
 
                 mDb.query(true, GOAL_TABLE, new String[]{KEY_ROWID, KEY_GOAL_WALK, KEY_GOAL_CLIMB, KEY_GOAL_TITLE, KEY_GOAL_PREVIOUS_STATE,
                                 KEY_GOAL_WALK_UNIT, KEY_GOAL_CLIMB_UNIT, KEY_GOAL_START, KEY_GOAL_END, KEY_GOAL_COMPLETE, KEY_TYPE,
-                                KEY_GOAL_DUAL, KEY_GOAL_ACTIVE, KEY_GOAL_FACEBOOK_ID, KEY_GOAL_TWITTER_ID, KEY_GOAL_MAP, KEY_GOAL_CALORIE}, KEY_ROWID + "=" + rowId, null,
+                                KEY_GOAL_DUAL, KEY_GOAL_ACTIVE, KEY_GOAL_FACEBOOK_ID, KEY_GOAL_TWITTER_ID, KEY_GOAL_MAP, KEY_GOAL_CALORIE, KEY_GOAL_CHALLENGE}, KEY_ROWID + "=" + rowId, null,
                         null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -760,9 +763,12 @@ public class DBAdapter {
         initialValues.put(KEY_CHALLENGE_OPPONENT, opponent);
         initialValues.put(KEY_CHALLENGE_PENALTY, penalty);
         initialValues.put(KEY_CHALLENGE_LOST, false);
+        initialValues.put(KEY_CHALLENGE_WON, false);
 
 
         Long challengeId = mDb.insert(CHALLENGE_TABLE, null, initialValues);
+
+        Log.d("Challenge", challengeId + "");
 
         ContentValues args = new ContentValues();
         args.put(KEY_GOAL_CHALLENGE, challengeId);
@@ -785,11 +791,18 @@ public class DBAdapter {
 
         Cursor mCursor =
 
-                mDb.query(true, CHALLENGE_TABLE, new String[]{KEY_ROWID, KEY_CHALLENGE_OPPONENT, KEY_CHALLENGE_PENALTY, KEY_CHALLENGE_LOST}, KEY_ROWID + "=" + rowId, null,
+                mDb.query(true, CHALLENGE_TABLE, new String[]{KEY_ROWID, KEY_CHALLENGE_OPPONENT, KEY_CHALLENGE_PENALTY, KEY_CHALLENGE_LOST, KEY_CHALLENGE_WON}, KEY_ROWID + "=" + rowId, null,
                         null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
         }
         return mCursor;
+    }
+
+    public void updateChallenge(Long rowId, boolean lost, boolean won){
+        ContentValues args = new ContentValues();
+        args.put(KEY_CHALLENGE_LOST, lost);
+        args.put(KEY_CHALLENGE_WON, won);
+        mDb.update(CHALLENGE_TABLE, args, KEY_ROWID + "=" + rowId, null);
     }
 }
