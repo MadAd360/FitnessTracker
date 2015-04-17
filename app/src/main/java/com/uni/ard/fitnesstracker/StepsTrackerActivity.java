@@ -63,7 +63,7 @@ public class StepsTrackerActivity extends Activity implements SensorEventListene
         mDbHelper.open();
 
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         spinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -221,13 +221,13 @@ private int numSteps = 0;
         //update any views you might have that are displaying the sensor information
         //You'd get accelerometer values like this:
 
-        if (event.sensor.getType() != Sensor.TYPE_GRAVITY) {
+        if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER) {
             return;
         }
 
-        float mSensorX = Math.abs(event.values[1]);
-        float mSensorY = Math.abs(event.values[2]);
-        float mSensorZ = Math.abs(event.values[0]);
+        float mSensorX = Math.abs(event.values[0])/9.8f;
+        float mSensorY = Math.abs(event.values[1])/9.8f;
+        float mSensorZ = Math.abs(event.values[2])/9.8f;
 
         //double dot = Math.abs(Math.sqrt(oldX * mSensorX + oldY * mSensorY + oldZ * mSensorZ));
         double a = (Math.sqrt(oldX * oldX + oldY * oldY + oldZ * oldZ));
@@ -251,7 +251,8 @@ private int numSteps = 0;
 
         Log.d("wmaDi", "wmaDi: " + Math.abs(wmaDi) + " CanStep: " + canStep);
 
-        if(Math.abs(wmaDi) < 0.93/* && ABS(wmaDi) >0.7*/)
+        //if(Math.abs(wmaDi) < 0.986/* > 0.992)
+            if(Math.abs(wmaDi) < 0.986/* && ABS(wmaDi) >0.7*/)
         {
             if (canStep) {
                 //isSleeping = true;
@@ -259,7 +260,7 @@ private int numSteps = 0;
                 //[self performSelector:@selector(wakeUp) withObject:nil afterDelay:0.2];
             }
         }
-        else if (Math.abs(wmaDi) > 0.99) {
+        else if (Math.abs(wmaDi) > 0.992) {
             if (!canStep) {
                 numSteps++;
                 //self.numStepsLbl.text = [NSString stringWithFormat:@"%d", numSteps];
@@ -279,7 +280,7 @@ private int numSteps = 0;
         oldY = mSensorY;
         oldZ = mSensorZ;
 
-        //Log.d("Sensor", "X: " + mSensorX + " Y: " + mSensorY + " Z: " + mSensorZ);
+        Log.d("Sensor", "X: " + mSensorX + " Y: " + mSensorY + " Z: " + mSensorZ);
         Log.d("Steps", "Steps: " + numSteps);
         mBodyText.setText("" + numSteps);
     }
