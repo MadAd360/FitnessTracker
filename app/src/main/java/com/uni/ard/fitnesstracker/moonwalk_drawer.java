@@ -173,7 +173,8 @@ public class moonwalk_drawer extends Activity
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.log_action) {
-            Intent i = new Intent(this, CreateActivity.class);
+            //Intent i = new Intent(this, CreateActivity.class);
+            Intent i = new Intent(this, StepsTrackerActivity.class);
             startActivityForResult(i, ACTIVITY_LOG);
             return true;
         } else if (item.getItemId() == R.id.add_goal) {

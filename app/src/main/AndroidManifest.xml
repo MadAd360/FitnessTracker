@@ -57,6 +57,13 @@
                 android:value="com.uni.ard.fitnesstracker.moonwalk_drawer" />
         </activity>
         <activity
+            android:name=".StepsTrackerActivity"
+            android:label="@string/title_activity_steps_tracker" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.uni.ard.fitnesstracker.moonwalk_drawer" />
+        </activity>
+        <activity
             android:name=".TestOperations"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_test_operations" >

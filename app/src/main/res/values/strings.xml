@@ -37,6 +37,7 @@
     <string name="title_activity_goal_history">Goal History</string>
     <string name="title_activity_map_distance">Map</string>
     <string name="facebook_app_id">825438540874180</string>
+    <string name="title_activity_steps_tracker">Steps Tracker Activity</string>
 
 
     <string name="title_activity_view">ViewActivity</string>
