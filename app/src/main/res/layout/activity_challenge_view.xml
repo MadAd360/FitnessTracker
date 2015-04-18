@@ -14,39 +14,125 @@
         android:orientation="vertical"
         android:padding="8dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="@android:dimen/notification_large_icon_height"
-        android:id="@+id/opponent"
-        android:text="Opponent:"
-        android:textColor="@color/dark_space_gray"
-        android:singleLine="true"
-        android:textIsSelectable="false"
-        android:textSize="20sp"
-        android:gravity="center_vertical"/>
-
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@android:dimen/notification_large_icon_height"
-            android:id="@+id/penalty"
-            android:text="Penalty:"
-            android:textColor="@color/dark_space_gray"
-            android:singleLine="true"
-            android:textIsSelectable="false"
-            android:textSize="20sp"
-            android:gravity="center_vertical"/>
+            android:orientation="horizontal">
 
-        <TextView
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="@android:dimen/notification_large_icon_height"
+                android:layout_weight="1"
+                android:text="Opponent:"
+                android:textColor="@color/dark_space_gray"
+                android:singleLine="true"
+                android:textIsSelectable="false"
+                android:textSize="20sp"
+                android:gravity="center_vertical"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="@android:dimen/notification_large_icon_height"
+                android:layout_weight="1"
+                android:id="@+id/opponent"
+                android:text="Opponent:"
+                android:textColor="@color/dark_space_gray"
+                android:singleLine="true"
+                android:textIsSelectable="false"
+                android:textSize="20sp"
+                android:gravity="center_vertical"/>
+
+            </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@android:dimen/notification_large_icon_height"
-            android:id="@+id/outcome"
-            android:text="Outcome:"
-            android:textColor="@color/dark_space_gray"
-            android:singleLine="true"
-            android:textIsSelectable="false"
-            android:textSize="20sp"
-            android:gravity="center_vertical"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="@android:dimen/notification_large_icon_height"
+                android:layout_weight="1"
+                android:text="Penalty:"
+                android:textColor="@color/dark_space_gray"
+                android:singleLine="true"
+                android:textIsSelectable="false"
+                android:textSize="20sp"
+                android:gravity="center_vertical"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="@android:dimen/notification_large_icon_height"
+                android:layout_weight="1"
+                android:id="@+id/penalty"
+                android:text="Penalty:"
+                android:textColor="@color/dark_space_gray"
+                android:singleLine="true"
+                android:textIsSelectable="false"
+                android:textSize="20sp"
+                android:gravity="center_vertical"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@android:dimen/notification_large_icon_height"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="@android:dimen/notification_large_icon_height"
+                android:layout_weight="1"
+                android:text="Outcome:"
+                android:textColor="@color/dark_space_gray"
+                android:singleLine="true"
+                android:textIsSelectable="false"
+                android:textSize="20sp"
+                android:gravity="center_vertical"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="@android:dimen/notification_large_icon_height"
+                android:layout_weight="1"
+                android:id="@+id/outcome"
+                android:text="Outcome:"
+                android:textColor="@color/dark_space_gray"
+                android:singleLine="true"
+                android:textIsSelectable="false"
+                android:textSize="20sp"
+                android:gravity="center_vertical"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@android:dimen/notification_large_icon_height"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="@android:dimen/notification_large_icon_height"
+                android:layout_weight="1"
+                android:text="Completion:"
+                android:textColor="@color/dark_space_gray"
+                android:singleLine="true"
+                android:textIsSelectable="false"
+                android:textSize="20sp"
+                android:gravity="center_vertical"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="@android:dimen/notification_large_icon_height"
+                android:layout_weight="1"
+                android:id="@+id/completion"
+                android:text="Completion:"
+                android:textColor="@color/dark_space_gray"
+                android:singleLine="true"
+                android:textIsSelectable="false"
+                android:textSize="20sp"
+                android:gravity="center_vertical"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

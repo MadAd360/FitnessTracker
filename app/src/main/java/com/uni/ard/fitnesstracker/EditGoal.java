@@ -104,13 +104,13 @@ public class EditGoal extends Activity {
 
         walkSpinner = (Spinner) findViewById(R.id.walkSpinner);
         walkAdapter = ArrayAdapter.createFromResource(this,
-                R.array.measurement_array, R.layout.spinner_item);
+                R.array.measurement_array_calorie, R.layout.spinner_item);
         walkAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         walkSpinner.setAdapter(walkAdapter);
 
         climbSpinner = (Spinner) findViewById(R.id.climbSpinner);
         climbAdapter = ArrayAdapter.createFromResource(this,
-                R.array.measurement_array, R.layout.spinner_item);
+                R.array.measurement_array_calorie, R.layout.spinner_item);
         climbAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         climbSpinner.setAdapter(climbAdapter);
 

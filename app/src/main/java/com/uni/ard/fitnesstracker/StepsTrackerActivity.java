@@ -31,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.UUID;
@@ -52,11 +53,17 @@ public class StepsTrackerActivity extends Activity implements SensorEventListene
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
 
+    private boolean stepDetectOn;
+    private TextView mStepText;
+    private Button mStepButton;
+
+    ArrayAdapter<CharSequence> adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
-        setTitle("Steps Tracker Activity");
+        setTitle("Log Activity");
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         mDbHelper = new DBAdapter(this);
@@ -66,7 +73,7 @@ public class StepsTrackerActivity extends Activity implements SensorEventListene
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         spinner = (Spinner) findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        adapter = ArrayAdapter.createFromResource(this,
                 R.array.measurement_array, R.layout.spinner_item);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         spinner.setAdapter(adapter);
@@ -86,6 +93,10 @@ public class StepsTrackerActivity extends Activity implements SensorEventListene
 
         mBodyText = (EditText) findViewById(R.id.numberOf);
         mTypeSwitch = (Switch) findViewById(R.id.typeSwitch);
+        mStepButton = (Button) findViewById(R.id.stepButton);
+        mStepText = (TextView) findViewById(R.id.numberSteps);
+
+        mStepText.setVisibility(View.GONE);
 
         Button confirmButton = (Button) findViewById(R.id.confirm);
 
@@ -127,8 +138,12 @@ public class StepsTrackerActivity extends Activity implements SensorEventListene
             public void onClick(View view) {
 
                 Boolean typeClimb = mTypeSwitch.isChecked();
-//                String distanceText = mBodyText.getText().toString();
-                String distanceText = "" + numSteps;
+                String distanceText;
+                if(stepDetectOn){
+                    distanceText = "" + numSteps;
+                }else{
+                    distanceText = mBodyText.getText().toString();
+                }
                 String unitText = spinner.getSelectedItem().toString();
 
                 if (!distanceText.isEmpty() && !unitText.isEmpty()) {
@@ -198,12 +213,16 @@ public class StepsTrackerActivity extends Activity implements SensorEventListene
 
     protected void onResume() {
         super.onResume();
-        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        if(stepDetectOn) {
+            mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        }
     }
 
     protected void onPause() {
         super.onPause();
-        mSensorManager.unregisterListener(this);
+        if(stepDetectOn) {
+            mSensorManager.unregisterListener(this);
+        }
     }
 
     private float oldX = 1f;
@@ -213,7 +232,7 @@ public class StepsTrackerActivity extends Activity implements SensorEventListene
     private Double[] last10 = new Double[] {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
     private boolean isSleeping = false;
     private boolean canStep = true;
-private int numSteps = 0;
+       private int numSteps = 0;
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -282,11 +301,33 @@ private int numSteps = 0;
 
         Log.d("Sensor", "X: " + mSensorX + " Y: " + mSensorY + " Z: " + mSensorZ);
         Log.d("Steps", "Steps: " + numSteps);
-        mBodyText.setText("" + numSteps);
+        mStepText.setText("" + numSteps);
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    public void stepDetection(View view){
+        if(stepDetectOn){
+            numSteps = 0;
+            stepDetectOn = false;
+            mStepText.setVisibility(View.GONE);
+            mBodyText.setVisibility(View.VISIBLE);
+            mBodyText.setText(mStepText.getText());
+            mStepText.setText("0");
+            mStepButton.setText("Start Step Detection");
+            spinner.setSelection(adapter.getPosition("Steps"));
+            mSensorManager.unregisterListener(this);
+        }else{
+            numSteps = 0;
+            stepDetectOn = true;
+            mStepText.setVisibility(View.VISIBLE);
+            mBodyText.setVisibility(View.GONE);
+            mStepButton.setText("Stop Step Detection");
+            mStepText.setText("0");
+            mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        }
     }
 }

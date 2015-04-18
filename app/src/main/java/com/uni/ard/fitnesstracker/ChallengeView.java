@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 
 public class ChallengeView extends Fragment {
     private DBAdapter mDbHelper;
@@ -23,6 +26,7 @@ public class ChallengeView extends Fragment {
     private TextView mOpponentText;
     private TextView mPenaltyText;
     private TextView mOutcomeText;
+    private TextView mCompletionText;
     private Button mOutcomeButton;
 
     private boolean complete;
@@ -31,6 +35,7 @@ public class ChallengeView extends Fragment {
     boolean lost;
     boolean won;
     Long challengeId;
+    Long end;
 
 
     public static ChallengeView newInstance(Long rowId) {
@@ -70,6 +75,7 @@ public class ChallengeView extends Fragment {
         mOpponentText = (TextView) view.findViewById(R.id.opponent);
         mPenaltyText = (TextView) view.findViewById(R.id.penalty);
         mOutcomeText = (TextView) view.findViewById(R.id.outcome);
+        mCompletionText = (TextView) view.findViewById(R.id.completion);
         mOutcomeButton = (Button) view.findViewById(R.id.outcomeSelect);
         updateView();
 
@@ -109,24 +115,38 @@ public class ChallengeView extends Fragment {
                 challengeCursor.getColumnIndexOrThrow(DBAdapter.KEY_CHALLENGE_LOST))>0;
         won = challengeCursor.getInt(
                 challengeCursor.getColumnIndexOrThrow(DBAdapter.KEY_CHALLENGE_WON))>0;
+        end = challengeCursor.getLong(
+                challengeCursor.getColumnIndexOrThrow(DBAdapter.KEY_CHALLENGE_FINISH));
     }
 
     public void updateView(){
         mOpponentText.setText("Opponent: " + opponentName);
         mPenaltyText.setText("Penalty: " + penalty);
         if(lost){
-            mOutcomeText.setText("Outcome: Lost");
+            mOutcomeText.setText("Lost");
             mOutcomeButton.setVisibility(View.GONE);
-//            statusView.setTextColor(0xFF880000);
+            mOutcomeText.setTextColor(0xFF880000);
         }else if(won){
-            mOutcomeText.setText("Outcome: Won");
+            mOutcomeText.setText("Won");
             mOutcomeButton.setVisibility(View.GONE);
-//            statusView.setTextColor(0xFF008800);
+            mOutcomeText.setTextColor(0xFF008800);
         }else{
-            mOutcomeText.setText("Outcome: Ongoing");
-//            statusView.setTextColor(0xFFB77600);
+            mOutcomeText.setText("Ongoing");
+            mOutcomeText.setTextColor(0xFFB77600);
         }
-        //disable button
+
+
+
+        DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getActivity());
+        DateFormat timeFormat = android.text.format.DateFormat.getTimeFormat(getActivity());
+
+        if(end == 0){
+            mCompletionText.setText("N/A");
+        }else{
+            String dateText = dateFormat.format(new Date(end));
+            String timeText = timeFormat.format(new Date(end));
+            mCompletionText.setText(dateText + " " + timeText);
+        }
     }
 
     public void setOutcome(){
@@ -142,6 +162,9 @@ public class ChallengeView extends Fragment {
                             updateValues();
                             updateView();
                             mDbHelper.updateGoalComplete(rowId, true);
+                            if(end == 0){
+                                mDbHelper.updateChallengeEnd(challengeId, GlobalVariables.getTime());
+                            }
                             SharedPreferences sp = PreferenceManager
                                     .getDefaultSharedPreferences(getActivity());
                             int freeCalories = sp.getInt("pref_calorie_free", 0);
@@ -176,6 +199,9 @@ public class ChallengeView extends Fragment {
                             updateValues();
                             updateView();
                             mDbHelper.updateGoalComplete(rowId, true);
+                            if(end == 0){
+                                mDbHelper.updateChallengeEnd(challengeId, GlobalVariables.getTime());
+                            }
                             SharedPreferences sp = PreferenceManager
                                     .getDefaultSharedPreferences(getActivity());
                             int freeCalories = sp.getInt("pref_calorie_free", 0);

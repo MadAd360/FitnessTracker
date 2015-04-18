@@ -16,11 +16,21 @@
         <item>@string/unitMile</item>
     </string-array>
 
+    <string-array name="measurement_array_calorie">
+        <item>@string/unitStep</item>
+        <item>@string/unitMetre</item>
+        <item>@string/unitKilometre</item>
+        <item>@string/unitFeet</item>
+        <item>@string/unitMile</item>
+        <item>@string/unitCalorie</item>
+    </string-array>
+
     <string name="unitStep">Steps</string>
     <string name="unitMile">Miles</string>
     <string name="unitMetre">Metres</string>
     <string name="unitKilometre">Kilometres</string>
     <string name="unitFeet">Feet</string>
+    <string name="unitCalorie">Calories</string>
 
     <string name="title_section1">Active Goals</string>
     <string name="title_section4">All Goals</string>

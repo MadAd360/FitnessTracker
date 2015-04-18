@@ -56,6 +56,28 @@
 
     </LinearLayout>
 
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@android:dimen/notification_large_icon_height"
+        android:id="@+id/numberSteps"
+        android:textSize="18sp"
+        android:gravity="center_vertical"
+        android:textColor="#ff999999" />
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@android:dimen/notification_large_icon_height"
+        android:text="Start Step Detection"
+        android:id="@+id/stepButton"
+        android:onClick="stepDetection"
+        android:background="@drawable/curved_rectangle"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:textColor="#ff333333"
+        android:clickable="true" />
+
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="@android:dimen/notification_large_icon_height"

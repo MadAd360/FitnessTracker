@@ -69,6 +69,7 @@ public class DBAdapter {
     public static final String KEY_CHALLENGE_PENALTY = "penalty";
     public static final String KEY_CHALLENGE_LOST = "lost";
     public static final String KEY_CHALLENGE_WON = "won";
+    public static final String KEY_CHALLENGE_FINISH = "finish";
 
 
     private static final String TAG = "DBAdapter";
@@ -122,7 +123,7 @@ public class DBAdapter {
 
     private static final String CHALLENGE_CREATE =
             "create table " + CHALLENGE_TABLE + " (_id integer primary key autoincrement, "
-                    + "opponent text, penalty integer, lost boolean, won boolean);";
+                    + "opponent text, penalty integer, lost boolean, won boolean, finish integer);";
 
     private final Context mCtx;
 
@@ -234,6 +235,9 @@ public class DBAdapter {
 
             Long calorieId = goalCursor.getLong(goalCursor.getColumnIndexOrThrow(KEY_GOAL_CALORIE));
 
+            Long challengeId = goalCursor.getLong(goalCursor.getColumnIndexOrThrow(KEY_GOAL_CHALLENGE));
+            Long endDate = goalCursor.getLong(goalCursor.getColumnIndexOrThrow(KEY_GOAL_END));
+
 
             Integer walkTotal = goalCursor.getInt(goalCursor.getColumnIndexOrThrow(KEY_GOAL_WALK));
             Integer climbTotal = goalCursor.getInt(goalCursor.getColumnIndexOrThrow(KEY_GOAL_CLIMB));
@@ -258,6 +262,10 @@ public class DBAdapter {
                         .getDefaultSharedPreferences(mCtx);
                 int freeCalories = sp.getInt("pref_calorie_free", 0);
                 sp.edit().putInt("pref_calorie_free", freeCalories + walkTotal + climbTotal).apply();
+
+                if(challengeId != 0){
+                    updateChallengeEnd(challengeId, endDate);
+                }
             }
         }
         return rowID;
@@ -791,7 +799,9 @@ public class DBAdapter {
 
         Cursor mCursor =
 
-                mDb.query(true, CHALLENGE_TABLE, new String[]{KEY_ROWID, KEY_CHALLENGE_OPPONENT, KEY_CHALLENGE_PENALTY, KEY_CHALLENGE_LOST, KEY_CHALLENGE_WON}, KEY_ROWID + "=" + rowId, null,
+                mDb.query(true, CHALLENGE_TABLE, new String[]{KEY_ROWID, KEY_CHALLENGE_OPPONENT,
+                                KEY_CHALLENGE_PENALTY, KEY_CHALLENGE_LOST, KEY_CHALLENGE_WON,
+                                KEY_CHALLENGE_FINISH}, KEY_ROWID + "=" + rowId, null,
                         null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -803,6 +813,12 @@ public class DBAdapter {
         ContentValues args = new ContentValues();
         args.put(KEY_CHALLENGE_LOST, lost);
         args.put(KEY_CHALLENGE_WON, won);
+        mDb.update(CHALLENGE_TABLE, args, KEY_ROWID + "=" + rowId, null);
+    }
+
+    public void updateChallengeEnd(Long rowId, Long end){
+        ContentValues args = new ContentValues();
+        args.put(KEY_CHALLENGE_FINISH, end);
         mDb.update(CHALLENGE_TABLE, args, KEY_ROWID + "=" + rowId, null);
     }
 }
