@@ -47,6 +47,7 @@ public class StepsTrackerActivity extends Activity implements SensorEventListene
     private DBAdapter mDbHelper;
     private Cursor mNotesCursor;
     private GoalAttachAdapter spinnerGoalAdapter;
+    private View customLayout;
 
     private boolean goalSet = false;
 
@@ -95,6 +96,7 @@ public class StepsTrackerActivity extends Activity implements SensorEventListene
         mTypeSwitch = (Switch) findViewById(R.id.typeSwitch);
         mStepButton = (Button) findViewById(R.id.stepButton);
         mStepText = (TextView) findViewById(R.id.numberSteps);
+        customLayout = findViewById(R.id.customLayout);
 
         mStepText.setVisibility(View.GONE);
 
@@ -231,7 +233,7 @@ public class StepsTrackerActivity extends Activity implements SensorEventListene
     private final int HISTORY_LEN = 10;
     private Double[] last10 = new Double[] {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
     private boolean isSleeping = false;
-    private boolean canStep = true;
+    private boolean canStep = false;
        private int numSteps = 0;
 
     @Override
@@ -279,7 +281,7 @@ public class StepsTrackerActivity extends Activity implements SensorEventListene
                 //[self performSelector:@selector(wakeUp) withObject:nil afterDelay:0.2];
             }
         }
-        else if (Math.abs(wmaDi) > 0.992) {
+        else if (Math.abs(wmaDi) > 0.993) {
             if (!canStep) {
                 numSteps++;
                 //self.numStepsLbl.text = [NSString stringWithFormat:@"%d", numSteps];
@@ -314,7 +316,7 @@ public class StepsTrackerActivity extends Activity implements SensorEventListene
             numSteps = 0;
             stepDetectOn = false;
             mStepText.setVisibility(View.GONE);
-            mBodyText.setVisibility(View.VISIBLE);
+            customLayout.setVisibility(View.VISIBLE);
             mBodyText.setText(mStepText.getText());
             mStepText.setText("0");
             mStepButton.setText("Start Step Detection");
@@ -324,10 +326,10 @@ public class StepsTrackerActivity extends Activity implements SensorEventListene
             numSteps = 0;
             stepDetectOn = true;
             mStepText.setVisibility(View.VISIBLE);
-            mBodyText.setVisibility(View.GONE);
+            customLayout.setVisibility(View.GONE);
             mStepButton.setText("Stop Step Detection");
             mStepText.setText("0");
-            mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+            mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
         }
     }
 }
