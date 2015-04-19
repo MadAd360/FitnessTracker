@@ -232,6 +232,8 @@ public class DBAdapter {
         if (goalCursor.moveToFirst()) {
 
             String goalName = goalCursor.getString(goalCursor.getColumnIndexOrThrow(KEY_GOAL_TITLE));
+            String goalClimbUnit = goalCursor.getString(goalCursor.getColumnIndexOrThrow(KEY_GOAL_CLIMB_UNIT));
+            String goalWalkUnit = goalCursor.getString(goalCursor.getColumnIndexOrThrow(KEY_GOAL_WALK_UNIT));
 
             Long calorieId = goalCursor.getLong(goalCursor.getColumnIndexOrThrow(KEY_GOAL_CALORIE));
 
@@ -261,7 +263,9 @@ public class DBAdapter {
                 SharedPreferences sp = PreferenceManager
                         .getDefaultSharedPreferences(mCtx);
                 int freeCalories = sp.getInt("pref_calorie_free", 0);
-                sp.edit().putInt("pref_calorie_free", freeCalories + walkTotal + climbTotal).apply();
+                int calorieClimbTotal = (int)GlobalVariables.convertUnits(climbTotal, true, "Calories", goalClimbUnit);
+                int calorieWalkTotal = (int)GlobalVariables.convertUnits(walkTotal, false, "Calories", goalWalkUnit);
+                sp.edit().putInt("pref_calorie_free", freeCalories + calorieClimbTotal + calorieWalkTotal).apply();
 
                 if(challengeId != 0){
                     updateChallengeEnd(challengeId, endDate);
