@@ -106,7 +106,7 @@ public class ChallengesFragment extends ListFragment {
 
                 return true;
             case LOG_ID:
-                Intent i = new Intent(getActivity(), CreateActivity.class);
+                Intent i = new Intent(getActivity(), StepsTrackerActivity.class);
 
                 i.putExtra(DBAdapter.KEY_ACTIVITY_GOAL, info.id);
                 startActivityForResult(i, ACTIVITY_LOG);

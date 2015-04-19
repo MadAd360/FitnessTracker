@@ -174,7 +174,7 @@ public class GoalDetails extends FragmentActivity {
             return true;
         }
         if (item.getItemId() == R.id.log_action) {
-            Intent i = new Intent(this, CreateActivity.class);
+            Intent i = new Intent(this, StepsTrackerActivity.class);
 
             i.putExtra(DBAdapter.KEY_ACTIVITY_GOAL, rowId);
             startActivityForResult(i, ACTIVITY_LOG);
