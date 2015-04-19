@@ -77,11 +77,11 @@ public class CreateTreat extends Activity {
         bundle.putString(DBAdapter.KEY_TREAT_NAME, treatNameView.getText().toString());
         bundle.putInt(DBAdapter.KEY_TREAT_CALORIES, new Integer(treatCaloriesView.getText().toString()));
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        int shrink = iconImage.getHeight()/300;
+        double shrink = iconImage.getHeight()/300;
         if(shrink < 1){
             shrink = 1;
         }
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(iconImage, iconImage.getWidth()/shrink, iconImage.getHeight()/shrink, true);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(iconImage, (int)(iconImage.getWidth()/shrink), (int)(iconImage.getHeight()/shrink), true);
         scaledBitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
         byte[] data = outputStream.toByteArray();
         bundle.putByteArray(DBAdapter.KEY_TREAT_IMAGE, data);
@@ -99,11 +99,11 @@ public class CreateTreat extends Activity {
             Uri selectedImageUri = intent.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
-                int shrink = bitmap.getHeight()/1000;
+                double shrink = bitmap.getHeight()/1000;
                 if(shrink < 1){
                     shrink = 1;
                 }
-                Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth()/shrink, bitmap.getHeight()/shrink, true);
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, (int)(bitmap.getWidth()/shrink), (int)(bitmap.getHeight()/shrink), true);
                 treatImageView.setImageBitmap(scaledBitmap);
                 iconImage = bitmap;
             } catch (IOException e) {
