@@ -315,7 +315,7 @@ public class EditGoal extends Activity {
                 }
 
                 if(challenge){
-                    if(challengeOpponentText.isEmpty()) {
+                    if(challengeOpponentText.trim().equals("")) {
                         Toast toast = Toast.makeText(EditGoal.this, "Opponent must not be blank", Toast.LENGTH_LONG);
                         toast.show();
                         return;
