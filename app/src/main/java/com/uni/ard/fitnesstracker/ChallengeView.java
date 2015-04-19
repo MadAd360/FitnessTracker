@@ -120,8 +120,8 @@ public class ChallengeView extends Fragment {
     }
 
     public void updateView(){
-        mOpponentText.setText(opponentName);
-        mPenaltyText.setText(penalty);
+        mOpponentText.setText(opponentName + "");
+        mPenaltyText.setText(penalty + "");
         if(lost){
             mOutcomeText.setText("Lost");
             mOutcomeButton.setVisibility(View.GONE);
