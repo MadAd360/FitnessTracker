@@ -186,7 +186,7 @@ public class DBAdapter {
             bm = BitmapFactory.decodeResource(mCtx.getResources(), R.drawable.cheesecake);
             insertTreat("Cheesecake", bm, 321);
             bm = BitmapFactory.decodeResource(mCtx.getResources(), R.drawable.chinese);
-            insertTreat("Chinese", bm, 235);
+            insertTreat("Chinese", bm, 2184);
             bm = BitmapFactory.decodeResource(mCtx.getResources(), R.drawable.chips);
             insertTreat("Chips", bm, 312);
             bm = BitmapFactory.decodeResource(mCtx.getResources(), R.drawable.bar_of_chocolate);
