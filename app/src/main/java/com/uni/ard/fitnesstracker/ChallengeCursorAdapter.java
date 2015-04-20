@@ -82,7 +82,7 @@ public class ChallengeCursorAdapter extends CursorAdapter {
 
         Drawable iconDrawable;
 
-        if(calorieId != null){
+        if(calorieId != 0){
             Cursor treatCursor = mDbHelper.fetchTreat(calorieId);
             byte[] imageByteArray = treatCursor.getBlob(treatCursor.getColumnIndexOrThrow(DBAdapter.KEY_TREAT_IMAGE));
 

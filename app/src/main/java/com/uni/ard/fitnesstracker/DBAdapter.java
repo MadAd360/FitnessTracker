@@ -311,7 +311,7 @@ public class DBAdapter {
                 sp.edit().putInt("pref_calorie_free", freeCalories + calorieClimbTotal + calorieWalkTotal).apply();
 
                 if(challengeId != 0){
-                    updateChallengeEnd(challengeId, endDate);
+                    updateChallengeEnd(challengeId, GlobalVariables.getTime());
                 }
             }
         }
@@ -839,7 +839,7 @@ public class DBAdapter {
 
         return mDb.query(GOAL_TABLE, new String[]{KEY_ROWID, KEY_GOAL_TITLE, KEY_GOAL_WALK, KEY_GOAL_CLIMB,
                 KEY_GOAL_WALK_UNIT, KEY_GOAL_CLIMB_UNIT, KEY_GOAL_START, KEY_GOAL_END, KEY_GOAL_COMPLETE,
-                KEY_TYPE, KEY_GOAL_ACTIVE, KEY_GOAL_CALORIE, KEY_GOAL_CHALLENGE}, where, null, null, null, order);
+                KEY_TYPE, KEY_GOAL_ACTIVE, KEY_GOAL_CALORIE, KEY_GOAL_CHALLENGE, KEY_GOAL_DUAL}, where, null, null, null, order);
     }
 
     public Cursor fetchChallenge(Long rowId) {

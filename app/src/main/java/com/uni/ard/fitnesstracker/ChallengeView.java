@@ -153,7 +153,7 @@ public class ChallengeView extends Fragment {
         if(complete){
             AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
             //builder1.setMessage("Select the outcome of the challenge");
-            builder1.setTitle("Set Outcome");
+            builder1.setMessage("Did you win or lose?");
             builder1.setCancelable(true);
             builder1.setPositiveButton("Lost",
                     new DialogInterface.OnClickListener() {
@@ -189,7 +189,7 @@ public class ChallengeView extends Fragment {
             alert11.show();
         }else{
             AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
-            builder1.setMessage("Did you win or lose?");
+            builder1.setMessage("Did you lose?");
             //builder1.setTitle("Set Outcome");
             builder1.setCancelable(true);
             builder1.setPositiveButton("Lost",
